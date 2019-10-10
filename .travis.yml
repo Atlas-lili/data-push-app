@@ -1,0 +1,26 @@
+language: node_js
+addons:
+  ssh_known_hosts:
+  - 49.232.10.119
+  apt:
+    packages:
+    - sshpass
+branches:
+  only:
+    - master
+node_js:
+- 10.16.3
+before_install:
+- openssl aes-256-cbc -K $encrypted_2a6db71b1d6c_key -iv $encrypted_2a6db71b1d6c_iv
+  -in id_rsa.enc -out ~/.ssh/id_rsa -d
+- chmod 600 ~/.ssh/id_rsa
+- echo -e "Host 49.232.10.119\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+install: cd nodejs && npm install --registry=https://registry.npm.taobao.org
+script: node -v
+after_success:
+- export SSHPASS=$DEPLOY_PASS
+- sshpass -e ssh root@49.232.10.119 -o stricthostkeychecking=no 'cd data-push-app && git pull'
+- sshpass -e ssh root@49.232.10.119 -o stricthostkeychecking=no 'cd data-push-app/nodejs && sh run_scripts.sh'
+env:
+  global:
+  - secure: eI22OAwGhEvmaFvnr/DidwXCNZSyDOcfKaDNizJ3j0zOvi55wEnbswVRC0w4ygHf2CDGCGT95MgHNJHdzh5AZvYkSgvPiMkBl11kKLegbmceQbwxMNHI46LVrxa7VF9exvuSBHPXUUbLOt7kEUfgExB0tdC1og8zW3evDhkfIfQ1mE0dYe7tGyCAwj1dIvfRVck1ZXDjHb56DVx+dwesiiriSaZJEPB+BcNKycH0VpqOJ4Xm04US/C0ZOfXDO6PJjmElfJDxOoWPNzJSC4cDb7/ASZLA6CB9cUFI0v+Y1hHslBfnGCTJ+4KqGsqAGAodFxSsYGfJI/0tv2fL2JFUGJ95MvHgMgkf0K1V4nar2gY1rRc9JR7o0OtUOkew7tICpo4alfD4AXq+YC3/ZmbGnL0PiHmhQiAGRGMLmn2M9HIcdyWcEYtYONjDweItjyo1ZKpm9wdhxxwhbv6EdkKQFe8JmujgWMFrd9+tNgG97pmIhWjkMXh12KUjr3OieoIwBH+91HnPW9reuT62fGH3cpEzQ3S0QysqdSKxKTQ1V2ZvetU5ILUB88eLBX2sjulRET+f0sOxXV2xm3egKWltSe+Kl/zGquRWrqKCuEIa9G94rABLFttSwIKK0skdmbPHVYoI3Mbfz7UupPNV3qdi1YM/Y5c0Dr0F1+RTPRjqJ4U=
