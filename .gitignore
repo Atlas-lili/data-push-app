@@ -1,5 +1,6 @@
 .DS_Store
 node_modules
+/nodejs/db
 /webjs/dist
 
 /webjs/tests/e2e/videos/

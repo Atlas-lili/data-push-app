@@ -3,7 +3,7 @@ const CompressionWebpackPlugin = require('compression-webpack-plugin');
 const productionGzipExtensions = ['js', 'css'];
 const isProduction = process.env.NODE_ENV === 'production';
 module.exports = {
- baseUrl: './',
+ publicPath: './',
  outputDir: path.join(__dirname,'../nodejs/assets'),
  assetsDir: '', // 相对于outputDir的静态资源(js、css、img、fonts)目录
  lintOnSave: false,
@@ -20,5 +20,15 @@ module.exports = {
         minRatio: 0.8
       }))
     }
+  },
+  devServer: {
+    disableHostCheck: true,
+    proxy: {
+      '/api': {
+        target: 'http://127.0.0.1:3000/', //对应自己的接口
+        changeOrigin: true,
+        ws: true,
+      }
+    },
   }
 };
