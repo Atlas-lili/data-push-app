@@ -2,6 +2,7 @@
 node_modules
 /nodejs/db
 /webjs/dist
+package-lock.json
 
 /webjs/tests/e2e/videos/
 /webjs/tests/e2e/screenshots/
