@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import LogPage from './views/LogPage'
 import Sys from './views/Sys'
 import View1 from './views/View1'
+import View2 from './views/View2'
 
 Vue.use(Router)
 
@@ -28,6 +29,10 @@ export default new Router({
           path: '1-1',
           name:'1-1',
           component:View1
+        }, {
+          path: '1-2',
+          name:'1-2',
+          component:View2
         }
       ]
     },

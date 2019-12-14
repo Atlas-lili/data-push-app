@@ -4,10 +4,10 @@ export var listMap = [{
     icon: 'el-icon-location',
     list: [{
         index: '1-1',
-        txt: '选项1'
+        txt: '室外气温走势'
     }, {
         index: '1-2',
-        txt: '选项2'
+        txt: '城市'
     }, {
         index: '1-3',
         txt: '选项3'
