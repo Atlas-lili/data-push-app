@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import LogPage from './views/LogPage'
-import Sys from './views/Sys'
-import View1 from './views/View1'
-import View2 from './views/View2'
+import Log from './views/Log/index'
+import Sys from './views/Sys/index'
+import WeatherAitNow from './views/WeatherAirNow/index'
+import DefaultCity from './views/City/index'
 
 Vue.use(Router)
 
@@ -15,24 +15,24 @@ export default new Router({
     }, {
       path: '/Login',
       name: 'Login',
-      component: LogPage
+      component: Log
     }, {
       path: '/Logon',
       name: 'Logon',
-      component: LogPage
+      component: Log
     }, {
       path: '/Sys',
       name: 'Sys',
       component: Sys,
       children: [
         {
-          path: '1-1',
-          name:'1-1',
-          component:View1
+          path: 'weather-air-now',
+          name:'weather-air-now',
+          component:WeatherAitNow
         }, {
-          path: '1-2',
-          name:'1-2',
-          component:View2
+          path: 'default-city',
+          name:'default-city',
+          component:DefaultCity
         }
       ]
     },

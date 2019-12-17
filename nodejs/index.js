@@ -8,6 +8,7 @@ const mockData = require('./mock_data')
 const initDB = require('./init_db').init;
 
 const {login,logon,testUniqueID} = require('./web_api/log.js')
+const {weatherNow,airNow} = require('./web_api/now.js')
 
 var port = (process.env.NODE_ENV==='production')? 80 : 3000;
 
@@ -27,7 +28,12 @@ router.post('/api/logon', async (ctx, next) => {
 router.get('/api/testUniqueID', async (ctx,next) => {
     ctx.response.body = await testUniqueID(ctx.query)
 })
-
+router.get('/api/weatherNow', async (ctx,next) => {
+    ctx.response.body = await weatherNow(ctx.query)
+})
+router.get('/api/airNow', async (ctx,next) => {
+    ctx.response.body = await airNow(ctx.query)
+})
 const staticPath = './assets'
 app.use(static(
     path.join( __dirname, staticPath)

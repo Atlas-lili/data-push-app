@@ -1,0 +1,140 @@
+{
+  "HeWeather6": [
+    {
+      "basic": {
+        "cid": "CN101010100",
+        "location": "北京",
+        "parent_city": "北京",
+        "admin_area": "北京",
+        "cnty": "中国",
+        "lat": "39.90498734",
+        "lon": "116.4052887",
+        "tz": "+8.00"
+      },
+      "update": { "loc": "2019-12-15 19:56", "utc": "2019-12-15 11:56" },
+      "status": "ok",
+      "hourly": [
+        {
+          "cloud": "99",
+          "cond_code": "104",
+          "cond_txt": "阴",
+          "dew": "-7",
+          "hum": "79",
+          "pop": "5",
+          "pres": "1017",
+          "time": "2019-12-15 22:00",
+          "tmp": "0",
+          "wind_deg": "35",
+          "wind_dir": "东北风",
+          "wind_sc": "1-2",
+          "wind_spd": "2"
+        },
+        {
+          "cloud": "99",
+          "cond_code": "404",
+          "cond_txt": "雨夹雪",
+          "dew": "-6",
+          "hum": "77",
+          "pop": "49",
+          "pres": "1017",
+          "time": "2019-12-16 01:00",
+          "tmp": "-1",
+          "wind_deg": "8",
+          "wind_dir": "北风",
+          "wind_sc": "1-2",
+          "wind_spd": "4"
+        },
+        {
+          "cloud": "99",
+          "cond_code": "404",
+          "cond_txt": "雨夹雪",
+          "dew": "-4",
+          "hum": "77",
+          "pop": "49",
+          "pres": "1014",
+          "time": "2019-12-16 04:00",
+          "tmp": "-2",
+          "wind_deg": "3",
+          "wind_dir": "北风",
+          "wind_sc": "1-2",
+          "wind_spd": "2"
+        },
+        {
+          "cloud": "99",
+          "cond_code": "404",
+          "cond_txt": "雨夹雪",
+          "dew": "-2",
+          "hum": "78",
+          "pop": "66",
+          "pres": "1011",
+          "time": "2019-12-16 07:00",
+          "tmp": "-2",
+          "wind_deg": "0",
+          "wind_dir": "北风",
+          "wind_sc": "1-2",
+          "wind_spd": "6"
+        },
+        {
+          "cloud": "98",
+          "cond_code": "401",
+          "cond_txt": "中雪",
+          "dew": "-2",
+          "hum": "79",
+          "pop": "47",
+          "pres": "1009",
+          "time": "2019-12-16 10:00",
+          "tmp": "-2",
+          "wind_deg": "95",
+          "wind_dir": "东风",
+          "wind_sc": "1-2",
+          "wind_spd": "1"
+        },
+        {
+          "cloud": "63",
+          "cond_code": "404",
+          "cond_txt": "雨夹雪",
+          "dew": "-2",
+          "hum": "80",
+          "pop": "0",
+          "pres": "1009",
+          "time": "2019-12-16 13:00",
+          "tmp": "0",
+          "wind_deg": "173",
+          "wind_dir": "南风",
+          "wind_sc": "1-2",
+          "wind_spd": "10"
+        },
+        {
+          "cloud": "15",
+          "cond_code": "104",
+          "cond_txt": "阴",
+          "dew": "-2",
+          "hum": "79",
+          "pop": "0",
+          "pres": "1011",
+          "time": "2019-12-16 16:00",
+          "tmp": "0",
+          "wind_deg": "110",
+          "wind_dir": "东南风",
+          "wind_sc": "1-2",
+          "wind_spd": "8"
+        },
+        {
+          "cloud": "2",
+          "cond_code": "104",
+          "cond_txt": "阴",
+          "dew": "-3",
+          "hum": "84",
+          "pop": "0",
+          "pres": "1014",
+          "time": "2019-12-16 19:00",
+          "tmp": "-1",
+          "wind_deg": "257",
+          "wind_dir": "西南风",
+          "wind_sc": "1-2",
+          "wind_spd": "1"
+        }
+      ]
+    }
+  ]
+}
