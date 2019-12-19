@@ -45,12 +45,7 @@ export default {
           if(res.data.code!=='000'){
             this.$message.error('定位失败');
           } else {
-            let city;
-            for(let c in cityMap){
-              if(c.City_CN===res.data.data.city){
-                city = c;
-              }
-            }
+            let city = cityMap[res.data.data.city]
             if(!city){
               this.$message.error('定位失败');
             } else {

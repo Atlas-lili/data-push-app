@@ -2,7 +2,7 @@
 var request = require('request'); 
 var Promise = require("bluebird");
 
-const baseUrl = "http://ip.taobao.com/service/getIpInfo.php"
+const baseUrl = "http://whois.pconline.com.cn/ipJson.jsp"
 exports.ipSearch = async function (req){
     var ip = req.ip;
     if(!ip||ip.indexOf('::ffff:')===-1){
@@ -13,7 +13,7 @@ exports.ipSearch = async function (req){
     }
     ip = ip.split('::ffff:')[1]
     var getCity = function(ip){
-        var url = baseUrl + '?ip='+ip;
+        var url = baseUrl + '?ip='+ip+'&json=true';
         return new Promise(function(res,rej){
             request(url, function (error, response, body) {
                 if(error){
@@ -24,10 +24,10 @@ exports.ipSearch = async function (req){
                     }catch(err){
                         rej(new Error(err))
                     }
-                    if(body.code!==0){
-                        rej(new Error(body.code))
+                    if(!body.city){
+                        rej(new Error(body.city))
                     } else {
-                        res(body.data)
+                        res(body)
                     }
                 }
             });
@@ -39,7 +39,7 @@ exports.ipSearch = async function (req){
             code: '000',
             info: '成功',
             data: {
-                region:res.region,
+                region:res.pro,
                 city:res.city 
             }
         }
