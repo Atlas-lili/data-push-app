@@ -142,6 +142,12 @@ export default {
         }
       }
     },
+    watch:{
+      city: function(oVal,nVal){
+        this.getWeather(nVal)
+      this.getAir(nVal)
+      }
+    },
     computed:{
       cond_img(){
         if(nightImgList.indexOf(this.cond.code)===-1){
@@ -160,9 +166,9 @@ export default {
           so2:'SO<span style="font-size:20px;">2</span>',
           co:'CO',
           o3: 'O<span style="font-size:20px;">3</span>',
-          '-':'--'
+          '-':'--',
         }
-        return map[this.air.main]
+        return map[this.air.main]||this.air.main
       }
     },
     methods:{

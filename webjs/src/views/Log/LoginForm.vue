@@ -70,7 +70,7 @@ export default {
                         type: 'success'})
                     this.resetForm(formName);
                     this.$store.commit('rewriteUserinfo', res.data.data)
-                    this.$router.push('/Sys/1-1')
+                    this.$router.push('/Sys/weather-air-now')
                 })
             } else {
                 console.log('error submit!!');

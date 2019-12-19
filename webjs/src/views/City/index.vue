@@ -58,17 +58,19 @@ import citys from './citys'
 import china from './china'
   //注意：这是API调用方法，千万不要忘记写哦
 Highmaps(Highcharts);
-var [pList,pMap] = (function(){
+var [pList,pMap,cMap] = (function(){
   var obj = {};
+  var cMap = {};
   citys.forEach(function(city,i){
     if(!obj[city.province]){
       obj[city.province] = [];
     }
     city.ID = i+''
     obj[city.province].push(city);
+    cMap[city.name]=city;
   })
   var arr = [];
-  for(name in obj){
+  for(let name in obj){
     arr.push({
       name: name,
       level: obj[name].length
@@ -80,7 +82,7 @@ var [pList,pMap] = (function(){
     }
     return -1;
   })
-  return [arr,obj]
+  return [arr,obj,cMap]
 })()
 export default {
     data() {
@@ -102,6 +104,9 @@ export default {
             message: '保存成功：'+this.formInline.selectCity.name,
             type: 'success'
           });
+          if(this.$route.name!=='default-city'){
+            this.$router.push({path:this.$route.path.split('city')[0]+this.formInline.selectCity.name})
+          }
         } else {
           this.$message.error('未选择不可以保存！');
         }
@@ -132,9 +137,9 @@ export default {
               color: '#a4edba'
             }
           },
-	        showInLegend: false
+          showInLegend: false,
         }],
-	      lastLevel = null;
+        lastLevel = null;
         for(var d of citys) {
           if(d.level.level !== lastLevel) {
             series.push({
@@ -153,14 +158,14 @@ export default {
               data: []
             });
             lastLevel = d.level.level;
-		      }
+          }
           series[series.length -1].data.push({
             name: d.name,
             properties: d,
             x: d.x,
             y: -d.y
           });
-	      }
+        }
         return {
           chart: {
             type: 'mappoint'
@@ -206,12 +211,25 @@ export default {
         }
       }
     },
+    mounted: function(){
+    },
     created: function (){
       this.pList = pList;
       this.Options = this.chartOptions();
+      if(this.city_name){
+        this.cList.splice(0,this.cList.length,...pMap[cMap[this.city_name].province])
+        this.formInline.Province_name = cMap[this.city_name].province;
+        this.$nextTick(() => {
+          this.formInline.city_ID = cMap[this.city_name].ID;
+        })
+        this.formInline.selectCity = cMap[this.city_name]
+      }
     },
     components: {
       Chart
+    },
+    props:{
+      city_name: String
     }
   }
 </script>
