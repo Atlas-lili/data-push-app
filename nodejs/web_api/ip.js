@@ -1,8 +1,8 @@
-//http://ip.taobao.com/service/getIpInfo.php?ip=210.75.225.254
 var request = require('request'); 
 var Promise = require("bluebird");
-
-const baseUrl = "http://whois.pconline.com.cn/ipJson.jsp"
+//http://api.map.baidu.com/location/ip?ip=111.21.39.39&ak=L4H8WfkVi4npinNIdYyVahul3YP2Ba7L
+const baseUrl = "http://api.map.baidu.com/location/ip"
+const ak = "IeDF7ipzpGsc4DYEV4rA7TUxGOa71LMd"
 exports.ipSearch = async function (req){
     var ip = req.ip;
     if(!ip||ip.indexOf('::ffff:')===-1){
@@ -13,21 +13,22 @@ exports.ipSearch = async function (req){
     }
     ip = ip.split('::ffff:')[1]
     var getCity = function(ip){
-        var url = baseUrl + '?ip='+ip+'&json=true';
+        var url = baseUrl + '?ip='+ip+'&ak='+ak;
         return new Promise(function(res,rej){
             request(url, function (error, response, body) {
                 if(error){
                     rej(new Error(error))
                 }else{
                     try{
+                        body = decodeURI(body);
                         body = JSON.parse(body);
                     }catch(err){
                         rej(new Error(err))
                     }
-                    if(!body.city){
-                        rej(new Error(body.city))
+                    if(body.status){
+                        rej(new Error(body.status))
                     } else {
-                        res(body)
+                        res(body.content.address_detail)
                     }
                 }
             });
@@ -39,7 +40,7 @@ exports.ipSearch = async function (req){
             code: '000',
             info: '成功',
             data: {
-                region:res.pro,
+                region:res.province,
                 city:res.city 
             }
         }

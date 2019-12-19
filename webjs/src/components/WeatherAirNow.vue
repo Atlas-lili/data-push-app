@@ -143,9 +143,12 @@ export default {
       }
     },
     watch:{
-      city: function(oVal,nVal){
-        this.getWeather(nVal)
-      this.getAir(nVal)
+      city: {
+        immediate: true,
+        handler (val) {
+          this.getWeather(val)
+          this.getAir(val)
+        }
       }
     },
     computed:{
