@@ -4,13 +4,14 @@ var Promise = require("bluebird");
 
 const baseUrl = "http://ip.taobao.com/service/getIpInfo.php"
 exports.ipSearch = async function (req){
-    var ip = req.headers['x-forwarded-for'] || req.headers['x-real-ip'];
-    if(!ip||ip===true){
+    var ip = req.ip;
+    if(!ip||ip.indexOf('::ffff:')===-1){
         return {
             code: '001',
             info: 'ip未知'
         }
     }
+    ip = ip.split('::ffff:')[1]
     var getCity = function(ip){
         var url = baseUrl + '?ip='+ip;
         return new Promise(function(res,rej){
