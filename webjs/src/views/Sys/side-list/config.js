@@ -3,7 +3,7 @@ export var listMap = [{
     title: '数据中心',
     icon: 'el-icon-data-analysis',
     list: [{
-        index: 'Sys/weather-air-now',
+        index: 'weather-air-now',
         txt: '天气/空气质量概览'
     }, {
         index: '1-2',
@@ -20,7 +20,7 @@ export var listMap = [{
     title: '设置',
     icon: 'el-icon-setting',
     list: [{
-        index: 'Sys/default-city',
+        index: 'default-city',
         txt: '更改默认展示城市'
     }, {
         index: '2-2',

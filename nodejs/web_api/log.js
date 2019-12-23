@@ -147,7 +147,7 @@ exports.logon = async function (reqBody){
             error
         }
     }
-    info.token = toHashToken(info.pass)
+    info.token = toHashToken(info.pass+info.ID)
     let u = new User(info)
     try{
         var r = await u.save();

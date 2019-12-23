@@ -9,16 +9,23 @@ var email = nodemailer.createTransport({
       pass: "wq329429"
     }
   });
-  var msg = {
-    from: "qwang<alfredqwang@163.com>", // 收件人显示的发件人信息
-
-    to: "3163299800@qq.com", // 目标邮箱号
-
-    subject: "Hello ✔",
-
-    text: 'first push' // 发送的内容
-  };
-  email.sendMail(msg, function(err, data) {
-    console.log(err,data)
-    //email.close();
-  });
+  
+  exports.pushMail = function(obj){
+    var date = new Date();
+    var d = date.getDate();
+    var m = date.getMonth()+1;
+    var y = date.getFullYear();
+    var msg = {
+      from: "天气订阅平台<alfredqwang@163.com>",
+      to: "3163299800@qq.com",
+      subject: `${y}年${m}月${d}日-天气报表`,
+    };
+    email.sendMail({
+      ...msg,
+      ...obj
+    }, function(err,data){
+      if(err){
+        console.log("发送失败！",err)
+      }
+    });
+  }

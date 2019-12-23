@@ -6,10 +6,12 @@ const path = require('path')
 
 const mockData = require('./mock_data')
 const initDB = require('./init_db').init;
+const {scheduleCronstyle} = require('./daily_work')
 
 const {login,logon,testUniqueID} = require('./web_api/log.js')
 const {weatherNow,airNow} = require('./web_api/now.js')
 const {ipSearch} = require('./web_api/ip.js')
+const {addSub} = require('./web_api/sub.js')
 
 var port = (process.env.NODE_ENV==='production')? 80 : 3000;
 
@@ -37,6 +39,9 @@ router.get('/api/airNow', async (ctx,next) => {
 router.get('/api/ipSearch', async (ctx,next) => {
     ctx.response.body = await ipSearch(ctx.request)
 })
+router.post('/api/addSub', async (ctx,next) => {
+    ctx.response.body = await addSub(ctx.request.body)
+})
 const staticPath = './assets'
 app.use(static(
     path.join( __dirname, staticPath)
@@ -45,3 +50,5 @@ app.use(bodyParser());
 app.use(router.routes())
 app.listen(port)
 console.log('服务启动在 '+port+' 端口')
+
+scheduleCronstyle();

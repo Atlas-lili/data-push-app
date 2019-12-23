@@ -22,18 +22,7 @@ import cityMap from '../../assets/cityMap.json'
 export default {
     data(){
         return {
-            city: {
-              name: "北京市",
-              province: "北京",
-              lat: 39.9031324643,
-              lon: 116.4010433787,
-              x: 6763,
-              level: { level: 1, name: "北京" },
-              y: 6381,
-              cityNo: "CN101010100",
-              City_CN: "北京",
-              City_EN: "beijing"
-            }
+            city: {}
         }
     },
     components:{
@@ -60,7 +49,8 @@ export default {
       }
     },
     created: function(){
-      var city = cityMap[this.city_name]
+      var city_name = this.city_name||this.$store.getters.Userinfo.city||"北京市"
+      var city = cityMap[city_name]
       if(city){
         this.city = city;
       }

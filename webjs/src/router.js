@@ -2,7 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Log from './views/Log/index'
 import Sys from './views/Sys/index'
-import WeatherAitNow from './views/WeatherAirNow/index'
+import WeatherAitNowView from './views/WeatherAirNow/index'
+import WeatherAitNow from './components/WeatherAirNow'
 import City from './views/City/index'
 
 Vue.use(Router)
@@ -28,7 +29,7 @@ export default new Router({
         {
           path: 'weather-air-now/:city_name?',
           name:'weather-air-now',
-          component:WeatherAitNow,
+          component:WeatherAitNowView,
           props: true
         },{
           path: 'weather-air-now/city/:city_name?',
@@ -41,6 +42,10 @@ export default new Router({
           component:City
         }
       ]
-    },
+    }, {
+      path: '/push/weather-air-now/:city',
+      component:WeatherAitNow,
+      props: true
+    }
   ]
 })

@@ -4,7 +4,7 @@
         <el-card class="box-card">
             <div slot="header" class="clearfix">
             <span>当前天气</span>
-            <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
+            <sub-btn url="/api/addSub" :params="{token:this.$store.getters.Userinfo.token,chartstr:this.city+'-WeatherNow'}" :disabled="disable1"></sub-btn>
             </div>
             <div class="box-body">
             <img class="cond-img" :src="cond_img" :alt="cond.txt" />
@@ -36,7 +36,7 @@
         <el-card class="box-card">
             <div slot="header" class="clearfix">
             <span>当前空气质量</span>
-            <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
+            <sub-btn url="/api/addSub" :params="{token:this.$store.getters.Userinfo.token,chartstr:this.city+'-AirNow'}" :disabled="disable2"></sub-btn>
             </div>
             <div class="box-body">
             <div class="air-imp">
@@ -123,6 +123,7 @@
 
 <script>
 import axios from 'axios'
+import subBtn from './SubBtn'
 var nightImgList = ['100','103', '104', '300', '301', '406', '407'];
 export default {
     data() {
@@ -152,6 +153,20 @@ export default {
       }
     },
     computed:{
+      disable1(){
+        var chartstr = this.city+'-WeatherNow'
+        if(Array.isArray(this.$store.getters.Userinfo.subList)&&this.$store.getters.Userinfo.subList.indexOf(chartstr)!=-1){
+          return true;
+        }
+        return false;
+      },
+      disable2(){
+        var chartstr = this.city+'-AirNow'
+        if(Array.isArray(this.$store.getters.Userinfo.subList)&&this.$store.getters.Userinfo.subList.indexOf(chartstr)!==-1){
+          return true;
+        }
+        return false;
+      },
       cond_img(){
         if(nightImgList.indexOf(this.cond.code)===-1){
           return '/weather/'+this.cond.code+'.png'
@@ -216,6 +231,9 @@ export default {
     created: function(){
       this.getWeather(this.city)
       this.getAir(this.city)
+    },
+    components:{
+      subBtn
     },
     props:{
         city: { type: String, required: true }

@@ -16,7 +16,10 @@ exports.User = (function(){
         ID: {type: String, index: {unique: true, dropDups: true}},
         pass: String,
         email: String,
-        token: String
+        token: String,
+        city: { type: String, default: '北京市' },
+        needSub: { type: Boolean, default: true },
+        subList: { type: Array, default: [] },
     });
     return mongoose.model('User', UserSchema);
 })()

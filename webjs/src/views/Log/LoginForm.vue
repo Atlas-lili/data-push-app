@@ -73,7 +73,8 @@ export default {
                     this.$router.push('/Sys/weather-air-now')
                 })
             } else {
-                console.log('error submit!!');
+                // eslint-disable-next-line no-console
+                console.error('error submit!!');
                 return false;
             }
             });
