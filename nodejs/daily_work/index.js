@@ -17,7 +17,7 @@ async function shotImg (chartstr,date){
       clip:{x:758,y:0,width:542,height:360}
     }
   }
-  const browser = await puppeteer.launch({ headless:true});
+  const browser = await puppeteer.launch({ headless:true,args: ['--no-sandbox']});
   const page = await browser.newPage();
   await page.goto(`http://www.alfredqwang.cn/#/${chartConf[chart].url}${city}`);
   await page.setViewport({
@@ -33,7 +33,7 @@ async function shotImg (chartstr,date){
 
 exports.scheduleCronstyle = ()=>{
   //每分钟的第30秒定时执行一次:
-    schedule.scheduleJob('30 * * * * *',async function(){
+    schedule.scheduleJob('* * 13 * * *',async function(){
       var date = new Date();
       var d = date.getDate();
       var m = date.getMonth()+1;
