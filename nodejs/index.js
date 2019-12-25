@@ -12,6 +12,7 @@ const {login,logon,testUniqueID} = require('./web_api/log.js')
 const {weatherNow,airNow} = require('./web_api/now.js')
 const {ipSearch} = require('./web_api/ip.js')
 const {addSub} = require('./web_api/sub.js')
+const {confCity} = require('./web_api/city.js')
 
 var port = (process.env.NODE_ENV==='production')? 80 : 3000;
 
@@ -41,6 +42,9 @@ router.get('/api/ipSearch', async (ctx,next) => {
 })
 router.post('/api/addSub', async (ctx,next) => {
     ctx.response.body = await addSub(ctx.request.body)
+})
+router.post('/api/confCity', async (ctx,next) => {
+    ctx.response.body = await confCity(ctx.request.body)
 })
 const staticPath = './assets'
 app.use(static(

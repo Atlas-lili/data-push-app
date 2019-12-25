@@ -5,18 +5,20 @@ const {pushMail} = require('../push_mail')
 const puppeteer = require("puppeteer");   //引入 puppeteer
 const {join} = require('path');
 
+const chartConf = {
+  "WeatherNow":{
+    url:"push/weather-air-now/",
+    href:"http://www.alfredqwang.cn/#/Sys/weather-air-now",
+    clip:{x:66,y:0,width:542,height:360}
+  },
+  "AirNow":{
+    url:"push/weather-air-now/",
+    href:"http://www.alfredqwang.cn/#/Sys/weather-air-now",
+    clip:{x:758,y:0,width:542,height:360}
+  }
+}
 async function shotImg (chartstr,date){
   const [city,chart,time] = chartstr.split("-")
-  const chartConf = {
-    "WeatherNow":{
-      url:"push/weather-air-now/",
-      clip:{x:66,y:0,width:542,height:360}
-    },
-    "AirNow":{
-      url:"push/weather-air-now/",
-      clip:{x:758,y:0,width:542,height:360}
-    }
-  }
   const browser = await puppeteer.launch({ headless:true,args: ['--no-sandbox']});
   const page = await browser.newPage();
   await page.goto(`http://www.alfredqwang.cn/#/${chartConf[chart].url}${city}`);
@@ -33,7 +35,7 @@ async function shotImg (chartstr,date){
 
 exports.scheduleCronstyle = ()=>{
   //每分钟的第30秒定时执行一次:
-    schedule.scheduleJob('* * 13 * * *',async function(){
+    schedule.scheduleJob('0 0 4 * * *',async function(){
       var date = new Date();
       var d = date.getDate();
       var m = date.getMonth()+1;
@@ -43,13 +45,16 @@ exports.scheduleCronstyle = ()=>{
         let html = ''
         for(sub of u.subList){
           await shotImg(sub,{d,m,y});
+          const chart = chartstr.split("-")[1]
           const src = `http://www.alfredqwang.cn/charts/${y}-${m}-${d}/${sub}.png`
-          html+=`<div><p>${sub}</p><img src="${src}" alt="${sub}" /></div>`
+          html+=`<div><p>${sub}---<a href="${chartConf[chart].href}">查看详情</a></p><img src="${src}" alt="${sub}" /></div>`
         }
-        pushMail({
-          to: u.email,
-          html,
-        })
+        if(html){
+          pushMail({
+            to: u.email,
+            html,
+          })
+        }
       }
     }); 
 }

@@ -23,8 +23,8 @@ export var listMap = [{
         index: 'default-city',
         txt: '更改默认展示城市'
     }, {
-        index: '2-2',
-        txt: '选项2'
+        index: 'conf-sub',
+        txt: '定制订阅'
     }, {
         index: '2-3',
         txt: '选项3'

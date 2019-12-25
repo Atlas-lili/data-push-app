@@ -5,6 +5,7 @@ import Sys from './views/Sys/index'
 import WeatherAitNowView from './views/WeatherAirNow/index'
 import WeatherAitNow from './components/WeatherAirNow'
 import City from './views/City/index'
+import ConfSub from './views/ConfSub/index'
 
 Vue.use(Router)
 
@@ -40,6 +41,10 @@ export default new Router({
           path: 'default-city',
           name:'default-city',
           component:City
+        }, {
+          path:'conf-sub',
+          name: 'conf-sub',
+          component: ConfSub,
         }
       ]
     }, {

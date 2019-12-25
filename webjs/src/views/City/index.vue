@@ -1,5 +1,5 @@
 <template>
-  <div id="page">
+  <div class="access-page">
     <div class="center">
       <el-tag
     class="city-tag"
@@ -100,12 +100,27 @@ export default {
     methods:{
       save(){
         if(this.formInline.selectCity.name){
-          this.$message({
-            message: '保存成功：'+this.formInline.selectCity.name,
-            type: 'success'
-          });
           if(this.$route.name!=='default-city'){
+            this.$message({
+              message: '保存成功：'+this.formInline.selectCity.name,
+              type: 'success'
+            });
             this.$router.push({path:this.$route.path.split('city')[0]+this.formInline.selectCity.name})
+          } else {
+            axios.post('/api/confCity',{token:this.$store.getters.Userinfo.token,city:this.formInline.selectCity.name}).then(res => {
+                if(!res.data){
+                    this.$message.error('请求出错！');
+                    return;
+                }
+                if(res.data.code!=='000'){
+                    this.$message.error(res.data.info);
+                    return;
+                }
+                this.$message({
+                    message: '修改成功！',
+                    type: 'success'})
+                this.$store.commit('assignUserinfo',{city:res.data.data})
+            })
           }
         } else {
           this.$message.error('未选择不可以保存！');
@@ -212,17 +227,35 @@ export default {
       }
     },
     mounted: function(){
+      if(this.$route.name === 'default-city'){
+        const loading = this.$loading({
+          target: '.access-page',
+          lock: true,
+          text: '加载中...',
+          spinner: 'el-icon-loading',
+          background: 'rgba(255, 255, 255, 0.7)'
+        });
+        if(this.$store.getters.Userinfo.token){
+          loading.close();
+        } else {
+          this.$message.error('抱歉，该功能需要先登录哦！');
+        }
+      }
     },
     created: function (){
       this.pList = pList;
       this.Options = this.chartOptions();
-      if(this.city_name){
-        this.cList.splice(0,this.cList.length,...pMap[cMap[this.city_name].province])
-        this.formInline.Province_name = cMap[this.city_name].province;
+      if(this.city_name||(this.$route.name === 'default-city')){
+        let city_name = this.city_name
+        if(this.$route.name === 'default-city'){
+          city_name = this.$store.getters.Userinfo.city;
+        }
+        this.cList.splice(0,this.cList.length,...pMap[cMap[city_name].province])
+        this.formInline.Province_name = cMap[city_name].province;
         this.$nextTick(() => {
-          this.formInline.city_ID = cMap[this.city_name].ID;
+          this.formInline.city_ID = cMap[city_name].ID;
         })
-        this.formInline.selectCity = cMap[this.city_name]
+        this.formInline.selectCity = cMap[city_name];
       }
     },
     components: {
