@@ -27,7 +27,10 @@ async function shotImg (chartstr,date){
     height:625
   }) 
   try{
-    fs.mkdirSync(join(__dirname,`../assets/charts/${date.y}-${date.m}-${date.d}`), { recursive: false });
+    var dir = join(__dirname,`../assets/charts/${date.y}-${date.m}-${date.d}`);
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
   }catch(err){}
   await page.screenshot({ path: join(__dirname,`../assets/charts/${date.y}-${date.m}-${date.d}/${chartstr}.png`),clip:chartConf[chart].clip});
   browser.close();
@@ -35,7 +38,7 @@ async function shotImg (chartstr,date){
 
 exports.scheduleCronstyle = ()=>{
   //每分钟的第30秒定时执行一次:
-    schedule.scheduleJob('0 0 4 * * *',async function(){
+    schedule.scheduleJob('0 0 5 * * *',async function(){
       var date = new Date();
       var d = date.getDate();
       var m = date.getMonth()+1;
@@ -45,7 +48,7 @@ exports.scheduleCronstyle = ()=>{
         let html = ''
         for(sub of u.subList){
           await shotImg(sub,{d,m,y});
-          const chart = chartstr.split("-")[1]
+          const chart = sub.split("-")[1]
           const src = `http://www.alfredqwang.cn/charts/${y}-${m}-${d}/${sub}.png`
           html+=`<div><p>${sub}---<a href="${chartConf[chart].href}">查看详情</a></p><img src="${src}" alt="${sub}" /></div>`
         }
