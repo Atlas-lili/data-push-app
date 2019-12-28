@@ -56,6 +56,7 @@ exports.scheduleCronstyle = ()=>{
           pushMail({
             to: u.email,
             html,
+            subject: `${y}年${m}月${d}日-给${u.ID}的天气报表`,
           })
         }
       }
