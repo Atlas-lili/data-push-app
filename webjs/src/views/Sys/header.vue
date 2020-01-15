@@ -1,7 +1,7 @@
 <template>
 	<el-row type='flex' justify='space-between' align='middle' tag='header'>
 		<el-col :span='4' class='header-left'>
-			<img src="../../assets/img/logo.png" class="logo" alt="LOGO" /><h1 class="title">天气订阅平台</h1>
+			<img src="../../assets/img/logo.png" class="logo" alt="LOGO" /><h1 class="title">天气订阅站</h1>
 		</el-col>
 		<el-col :span='8' class='header-right'>
 			<el-tooltip class="item" effect="dark" placement="bottom-start">
