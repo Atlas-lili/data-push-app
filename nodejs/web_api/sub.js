@@ -75,3 +75,67 @@ exports.addSub = async function(reqBody){
         }
     } 
 }
+
+exports.changeSub = async function(reqBody){
+    const {token, needSub} = reqBody;
+    if ((!token)||(typeof needSub !== 'boolean')){
+        return {
+            code: '001',
+            info: '参数缺失'
+        }
+    }
+    try{
+        var user = await User.findOne({ token }).exec();
+        if(user){
+            user.needSub = needSub;
+            user.save();
+            return {
+                code: '000',
+                info: '配置成功',
+                data: user.needSub
+            }
+        } else {
+            return {
+                code: '002',
+                info: '无效证书'
+            }
+        }
+    }catch(err){
+        return {
+            code: '004',
+            info: '数据库错误'
+        }
+    }
+}
+
+exports.confSubList = async function(reqBody){
+    const {token, subList} = reqBody;
+    if ((!token)||(!subList)){
+        return {
+            code: '001',
+            info: '参数缺失'
+        }
+    }
+    try{
+        var user = await User.findOne({ token }).exec();
+        if(user){
+            user.subList = subList;
+            user.save();
+            return {
+                code: '000',
+                info: '配置成功',
+                data: user.subList
+            }
+        } else {
+            return {
+                code: '002',
+                info: '无效证书'
+            }
+        }
+    }catch(err){
+        return {
+            code: '004',
+            info: '数据库错误'
+        }
+    }
+}

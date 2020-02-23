@@ -52,6 +52,7 @@ exports.airNow = async function (reqBody){
         }
     }
     var getAir = function(city){
+        if(city==='xian')city="xi%27an"
         var url = baseUrl + 'air/now?location='+city+'&key='+key;
         return new Promise(function(res,rej){
             request(url, function (error, response, body) {

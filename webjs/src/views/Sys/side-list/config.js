@@ -1,7 +1,7 @@
 export var listMap = [{
     key: 'first',
-    title: '数据中心',
-    icon: 'el-icon-data-analysis',
+    title: '天气中心',
+    icon: 'el-icon-umbrella',
     list: [{
         index: 'weather-air-now',
         txt: '天气/空气质量概览'
@@ -17,6 +17,14 @@ export var listMap = [{
     }, ]
 }, {
     key: 'second',
+    title: '疫情中心',
+    icon: 'el-icon-data-analysis',
+    list: [{
+        index: 'epidemic-total',
+        txt: '疫情概览'
+    }]
+}, {
+    key: '3th',
     title: '设置',
     icon: 'el-icon-setting',
     list: [{

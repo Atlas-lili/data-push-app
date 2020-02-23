@@ -13,6 +13,7 @@
             </el-tabs>
         </el-main>
     </el-container>
+    <footer>陕ICP备19021517号</footer>
   </div>
 </template>
 
@@ -48,6 +49,13 @@
                 text-align: center;
             }
         }
+    }
+    footer{
+        position: absolute;
+        bottom: 0;
+        text-align: center;
+        width: 100%;
+        height:4%;
     }
 }
 </style>

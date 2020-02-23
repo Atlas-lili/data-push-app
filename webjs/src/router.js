@@ -6,6 +6,7 @@ import WeatherAitNowView from './views/WeatherAirNow/index'
 import WeatherAitNow from './components/WeatherAirNow'
 import City from './views/City/index'
 import ConfSub from './views/ConfSub/index'
+import EpidemicTotal from './views/EpidemicTotal/index'
 
 Vue.use(Router)
 
@@ -37,6 +38,10 @@ export default new Router({
           name: 'weather-air-now-city',
           component: City,
           props: true
+        },{
+          path: 'epidemic-total',
+          name: 'epidemic-total',
+          component: EpidemicTotal
         },{
           path: 'default-city',
           name:'default-city',

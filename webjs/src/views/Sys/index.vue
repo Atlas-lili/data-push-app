@@ -7,6 +7,7 @@
         <router-view></router-view>
       </div>
     </div>
+    <footer>陕ICP备19021517号</footer>
   </div>
 </template>
 
@@ -19,12 +20,16 @@ img{vertical-align:top;border:none}
   padding-top: 70px;
   height: 100vh;
   .body{
-    height: 100%;
+    height: 96%;
     display: flex;
     .view{
       flex:1;
       overflow: auto;
     }
+  }
+  footer{
+    text-align: center;
+    height:4%;
   }
 }
 </style>

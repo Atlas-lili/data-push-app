@@ -1,7 +1,6 @@
 <template>
   <div id="app">
     <router-view></router-view>
-    <div class="footer">陕ICP备19021517号</div>
   </div>
 </template>
 
