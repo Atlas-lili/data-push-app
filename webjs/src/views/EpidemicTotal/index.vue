@@ -24,8 +24,8 @@ import CityDCSpecific from '../../components/CityDCSpecific';
 import ProvinceLocalization from '../../components/ProvinceLocalization';
 async function getStatus() {
     var res = await http.request({
-        url: 'https://www.tianqiapi.com/api',
-        // url: '/static/epidemic.json',
+        // url: 'https://www.tianqiapi.com/api',
+        url: '/epidemic.json',
         method: 'get',
         params: {
             version: 'epidemic',

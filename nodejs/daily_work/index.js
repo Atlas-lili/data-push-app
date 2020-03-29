@@ -15,6 +15,11 @@ const chartConf = {
     url:"push/weather-air-now/",
     href:"http://www.alfredqwang.cn/#/Sys/weather-air-now",
     clip:{x:758,y:0,width:542,height:360}
+  },
+  "WeatherHistory":{
+    url:"push/weather-history/",
+    href:"http://www.alfredqwang.cn/#/Sys/weather-history",
+    clip:{x:145,y:0,width:1084,height:502}
   }
 }
 async function shotImg (chartstr,date){
@@ -37,7 +42,7 @@ async function shotImg (chartstr,date){
 }
 
 exports.scheduleCronstyle = ()=>{
-  //每分钟的第30秒定时执行一次:
+  //每分钟的第30秒定时执行一次:30 * * * * *  0 0 5 * * *
     schedule.scheduleJob('0 0 5 * * *',async function(){
       var date = new Date();
       var d = date.getDate();
@@ -53,11 +58,11 @@ exports.scheduleCronstyle = ()=>{
           html+=`<div><p>${sub}---<a href="${chartConf[chart].href}">查看详情</a></p><img src="${src}" alt="${sub}" /></div>`
         }
         if(html){
-          pushMail({
-            to: u.email,
-            html,
-            subject: `${y}年${m}月${d}日-给${u.ID}的天气报表`,
-          })
+          // pushMail({
+          //   to: u.email,
+          //   html,
+          //   subject: `${y}年${m}月${d}日-给${u.ID}的天气报表`,
+          // })
         }
       }
     }); 

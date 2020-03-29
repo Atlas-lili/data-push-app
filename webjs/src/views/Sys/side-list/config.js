@@ -6,15 +6,9 @@ export var listMap = [{
         index: 'weather-air-now',
         txt: '天气/空气质量概览'
     }, {
-        index: '1-2',
-        txt: '城市'
-    }, {
-        index: '1-3',
-        txt: '选项3'
-    }, {
-        index: '1-4',
-        txt: '选项4'
-    }, ]
+        index: 'weather-history',
+        txt: '近日天气'
+    }]
 }, {
     key: 'second',
     title: '疫情中心',
@@ -22,6 +16,9 @@ export var listMap = [{
     list: [{
         index: 'epidemic-total',
         txt: '疫情概览'
+    }, {
+        index: 'epidemic-now',
+        txt: '疫情概览x'
     }]
 }, {
     key: '3th',
@@ -33,11 +30,5 @@ export var listMap = [{
     }, {
         index: 'conf-sub',
         txt: '定制订阅'
-    }, {
-        index: '2-3',
-        txt: '选项3'
-    }, {
-        index: '2-4',
-        txt: '选项4'
     }]
 }]

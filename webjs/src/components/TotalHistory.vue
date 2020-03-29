@@ -10,8 +10,11 @@ export default {
         return {
             timeLine: {
                 type: 'category',
-                boundaryGap: false,
-                data: []
+                // boundaryGap: false,
+                data: [],
+                axisTick: {
+                    alignWithLabel: true
+                }
             },
             diagnosedLine: {
                 name: '确诊病例',
@@ -26,6 +29,7 @@ export default {
                 name: '新增确诊',
                 type: 'bar',
                 stack: '新增确诊',
+                yAxisIndex: 1,
                 itemStyle: {
                     color: '#3300FF'
                 },
@@ -98,14 +102,14 @@ export default {
                 ],
                 yAxis: [{
                     type: 'value',
-                    name: '确诊|疑似|新增',
-                    max: 100000,
-                    splitNumber: 5
+                    name: '确诊|疑似',
+                    max: 40000,
+                    splitNumber: 8
                 }, {
                     type: 'value',
-                    name: '死亡|治愈',
-                    max: 40000,
-                    splitNumber: 5,
+                    name: '死亡|治愈|新增',
+                    max: 4000,
+                    splitNumber: 8,
                     position: 'right'
                 }],
                 series: [

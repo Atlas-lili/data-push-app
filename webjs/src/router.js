@@ -4,6 +4,10 @@ import Log from './views/Log/index'
 import Sys from './views/Sys/index'
 import WeatherAitNowView from './views/WeatherAirNow/index'
 import WeatherAitNow from './components/WeatherAirNow'
+import WeatherHistoryView from './views/WeatherHistory/index'
+import WeatherHistory from './components/WeatherHistory'
+import EpidemicNow from './views/EpidemicNow/index'
+
 import City from './views/City/index'
 import ConfSub from './views/ConfSub/index'
 import EpidemicTotal from './views/EpidemicTotal/index'
@@ -39,6 +43,20 @@ export default new Router({
           component: City,
           props: true
         },{
+          path: 'weather-history/:city_name?',
+          name:'weather-history',
+          component:WeatherHistoryView,
+          props: true
+        },{
+          path: 'weather-history/city/:city_name?',
+          name: 'weather-history-city',
+          component: City,
+          props: true
+        },{
+          path: 'epidemic-now',
+          name: 'epidemic-now',
+          component: EpidemicNow
+        },{
           path: 'epidemic-total',
           name: 'epidemic-total',
           component: EpidemicTotal
@@ -55,6 +73,10 @@ export default new Router({
     }, {
       path: '/push/weather-air-now/:city',
       component:WeatherAitNow,
+      props: true
+    }, {
+      path: '/push/weather-history/:city',
+      component:WeatherHistory,
       props: true
     }
   ]

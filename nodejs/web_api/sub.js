@@ -1,7 +1,8 @@
 const User = require('../init_db').User;
 var chartMap = {
     "WeatherNow":[],
-    "AirNow":[]
+    "AirNow":[],
+    "WeatherHistory":[]
 }
 exports.addSub = async function(reqBody){
     const {token,chartstr} = reqBody;
