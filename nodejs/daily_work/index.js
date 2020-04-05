@@ -19,9 +19,19 @@ const chartConf = {
   "WeatherHistory":{
     url:"push/weather-history/",
     href:"http://www.alfredqwang.cn/#/Sys/weather-history",
-    clip:{x:145,y:0,width:1084,height:502}
+    clip:{x:145,y:0,width:1084,height:502},
+    mount: true
   }
 }
+
+function holdTime(ms) {
+  return new Promise((rej) => {
+    setTimeout(() => {
+      rej();
+    }, ms)
+  })
+}
+
 async function shotImg (chartstr,date){
   const [city,chart,time] = chartstr.split("-")
   const browser = await puppeteer.launch({ headless:true,args: ['--no-sandbox']});
@@ -37,6 +47,9 @@ async function shotImg (chartstr,date){
       fs.mkdirSync(dir, { recursive: true });
     }
   }catch(err){}
+  if (chartConf[chart].mount) {
+    await holdTime(500);
+  }
   await page.screenshot({ path: join(__dirname,`../assets/charts/${date.y}-${date.m}-${date.d}/${chartstr}.png`),clip:chartConf[chart].clip});
   browser.close();
 }
@@ -58,11 +71,11 @@ exports.scheduleCronstyle = ()=>{
           html+=`<div><p>${sub}---<a href="${chartConf[chart].href}">查看详情</a></p><img src="${src}" alt="${sub}" /></div>`
         }
         if(html){
-          // pushMail({
-          //   to: u.email,
-          //   html,
-          //   subject: `${y}年${m}月${d}日-给${u.ID}的天气报表`,
-          // })
+          pushMail({
+            to: u.email,
+            html,
+            subject: `${y}年${m}月${d}日-给${u.ID}的天气报表`,
+          })
         }
       }
     }); 

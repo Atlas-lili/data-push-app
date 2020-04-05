@@ -41,7 +41,8 @@ import citysList from '../City/citys.js'
 
 var chartsMap = {
     WeatherNow: '当前天气',
-    AirNow: '当前空气质量'
+    AirNow: '当前空气质量',
+    WeatherHistory: '近日天气'
 }
 
 export default {
