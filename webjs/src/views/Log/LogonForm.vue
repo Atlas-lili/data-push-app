@@ -12,6 +12,10 @@
   <el-form-item label="确认密码" prop="checkPass">
     <el-input type="password" v-model="logonForm.checkPass" auto-complete="off" placeholder="再次输入密码"></el-input>
   </el-form-item>
+  <el-form-item label="验证码" prop="checkCode">
+    <el-input v-model="logonForm.checkCode" class="check-code" auto-complete="off" placeholder="请输入邮箱验证码"></el-input>
+    <el-button class="code-btn" :disabled="codeBtn.disabled" @click="sendCode">{{codeBtn.text}}</el-button>
+  </el-form-item>
   <el-form-item>
     <el-button type="primary" @click="submitForm('logonForm')">提交</el-button>
     <el-button @click="resetForm('logonForm')">重置</el-button>
@@ -53,7 +57,7 @@ export default {
                 // 异步请求验证用户名重复与否
                 // callback('该用户名已有人注册，请更换重试'); or callback('网络状况不佳，无法验证用户名');
                 axios.get('/api/testUniqueID', {
-　　                params: {ID:value}
+                    params: {ID:value}
                 }).then(res => {
                     if(!res.data){
                         callback('网络状况不佳，无法验证用户名');
@@ -72,7 +76,8 @@ export default {
                 ID: '',
                 pass: '',
                 checkPass: '',
-                email: ''
+                email: '',
+                checkCode: ''
             },
             logoTest: {
                 pass: [
@@ -87,16 +92,66 @@ export default {
                 ],
                 ID: [
                     { required: true, validator: checkID, trigger: 'blur' }
+                ],
+                checkCode: [
+                    { required: true, message: '请输入验证码', trigger: 'blur' }
                 ]
+            },
+            codeBtnStatus: 'no-email',
+            codeBtn: {
+                disabled: true,
+                text: '获取验证码'
             }
         };
     },
+    watch: {
+        'logonForm.email': function(val) {
+            if (/^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/.test(val)) {
+                if (this.codeBtnStatus === 'no-email') {
+                    this.codeBtnStatus = 'on';
+                }
+            } else if (this.codeBtnStatus === 'on') {
+                this.codeBtnStatus = 'no-email';
+            }
+        },
+        codeBtnStatus(val) {
+            switch(val) {
+                case 'no-email':
+                    this.codeBtn.disabled = true;
+                    this.codeBtn.text = '获取验证码';
+                    break;
+                case 'on':
+                    this.codeBtn.disabled = false;
+                    this.codeBtn.text = '获取验证码';
+                    break;
+                case 'loading':
+                    this.codeBtn.disabled = true;
+                    this.codeBtn.text = '加载中';
+                    break;
+                case 'timing':
+                    this.codeBtn.disabled = true;
+                    this.codeBtn.text = '60s后可再次获取';
+                    this.timingCount(60);
+                    break;
+            }
+        }
+    },
     methods: {
+        timingCount(count) {
+            if(!count) {
+                this.codeBtnStatus = 'on';
+                return;
+            }
+            this.codeBtn.text = `${count}s后可再次获取`;
+            setTimeout(() => {
+                this.timingCount(--count)
+            },1000)
+        },
         submitForm(formName) {
             this.$refs[formName].validate((valid) => {
             if (valid) {
-                const {ID,pass,email}= this.logonForm
-                axios.post('/api/logon',{ID,pass,email}).then(res => {
+                const {ID,pass,email,checkCode}= this.logonForm
+                axios.post('/api/logon',{ID,pass,email,checkCode}).then(res => {
                     if(!res.data){
                         this.$message.error('请求出错！');
                         return;
@@ -118,6 +173,17 @@ export default {
         },
         resetForm(formName) {
             this.$refs[formName].resetFields();
+        },
+        sendCode() {
+            this.codeBtnStatus = 'loading';
+            axios.post('/api/sendCheckCode', {email: this.logonForm.email}).then(res => {
+                if(res.data && res.data.code==='000'){
+                    this.codeBtnStatus = 'timing';
+                    return;
+                } else {
+                    this.codeBtnStatus = 'on';
+                }
+            })
         }
     },
     props:{
@@ -127,5 +193,13 @@ export default {
 </script>
 
 <style lang="scss">
-
+.demo-ruleForm {
+    .check-code {
+        width: 50%;
+    }
+    .code-btn {
+        margin-left: 5%;
+        width: 45%;
+    }
+}
 </style>

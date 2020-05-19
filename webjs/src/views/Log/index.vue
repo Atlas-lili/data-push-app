@@ -1,7 +1,7 @@
 <template>
   <div class="log-p">
     <el-container class="cont-box">
-        <el-header class="H1">天气订阅站</el-header>
+        <el-header class="H1">天气数据报表系统</el-header>
         <el-main>
             <el-tabs v-model="activeName" @tab-click="handleClick">
                 <el-tab-pane label="登录" name="Login">

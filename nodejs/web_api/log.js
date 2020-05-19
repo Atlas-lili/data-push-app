@@ -2,6 +2,8 @@ const crypto = require('crypto');
 const hash = crypto.createHash('sha256');
 
 const User = require('../init_db').User;
+const {pushMail} = require('../push_mail')
+var emailMap = {};
 
 function toHashToken(str){
     hash.update(str+'233333');
@@ -120,7 +122,8 @@ exports.logon = async function (reqBody){
     const info = {
         ID: reqBody.ID||'',
         pass: reqBody.pass||'',
-        email: reqBody.email||''
+        email: reqBody.email||'',
+        checkCode: reqBody.checkCode||''
     }
     let error = []
     for(key in info){
@@ -145,6 +148,13 @@ exports.logon = async function (reqBody){
             code: '002',
             info: '参数格式错误',
             error
+        }
+    }
+    if (!emailMap[info['email']] || info['checkCode'] !== emailMap[info['email']].code) {
+        return{
+            code: '005',
+            info: '验证码不正确',
+            error: []
         }
     }
     info.token = toHashToken(info.pass+info.ID)
@@ -192,4 +202,65 @@ exports.testUniqueID = async function(reqBody){
             info: '数据库错误'
         }
     } 
+}
+
+function makeCode (email) {
+    var timer = setTimeout(function() {
+        delete emailMap[email];
+    }, 300000);
+    var codeItem = {
+        code: Math.floor(Math.random()*100)+''+Math.floor(Math.random()*100)+Math.floor(Math.random()*100),
+    }
+    setTimeout(function() {
+        codeItem.clear = () => {
+            clearTimeout(timer);
+            delete emailMap[email];
+        }
+    }, 60000);
+    emailMap[email] = codeItem;
+    return codeItem;
+}
+var emailContent = code => `注册验证码为 ${code} ，有效期为5分钟。`
+exports.sendCheckCode = async function({email}){
+    if (!email) {
+        return {
+            code: '001',
+            info: 'email缺失'
+        }
+    } else if (!/^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/.test(email)) {
+        return {
+            code: '002',
+            info: 'email无效'
+        }
+    }
+    var item = emailMap[email];
+    if (item){
+        if (item.clear) {
+            item.clear();
+            item = makeCode(email);
+        } else {
+            return {
+                code: '004',
+                info: '稍后重试'
+            }
+        }
+    } else {
+        item = makeCode(email);
+    }
+    try {
+        await pushMail({
+            to: email,
+            subject: '注册-验证码',
+            html: emailContent(item.code)
+        })
+    } catch (err) {
+        return {
+            code: '003',
+            info: '发送失败'
+        }
+    }
+    return {
+        code: '000',
+        info: '发送成功'
+    }
 }

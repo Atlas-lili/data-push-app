@@ -20,12 +20,16 @@ var email = nodemailer.createTransport({
       to: "3163299800@qq.com",
       subject: `${y}年${m}月${d}日-天气报表`,
     };
-    email.sendMail({
-      ...msg,
-      ...obj
-    }, function(err,data){
-      if(err){
-        console.log("发送失败！",err)
-      }
-    });
+    return new Promise(function(res, rej) {
+      email.sendMail({
+        ...msg,
+        ...obj
+      }, function(err,data){
+        if(err){
+          rej(new Error(err));
+        } else {
+          res('success')
+        }
+      });
+    })
   }

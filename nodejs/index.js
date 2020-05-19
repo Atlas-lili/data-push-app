@@ -8,7 +8,7 @@ const mockData = require('./mock_data')
 const initDB = require('./init_db').init;
 const {scheduleCronstyle} = require('./daily_work')
 
-const {login,logon,testUniqueID} = require('./web_api/log.js')
+const {login,logon,testUniqueID, sendCheckCode} = require('./web_api/log.js')
 const {weatherNow,airNow} = require('./web_api/now.js')
 const {ipSearch} = require('./web_api/ip.js')
 const {addSub, changeSub, confSubList} = require('./web_api/sub.js')
@@ -28,6 +28,9 @@ router.post('/api/login', async (ctx, next) => {
 })
 router.post('/api/logon', async (ctx, next) => {
     ctx.response.body = await logon(ctx.request.body)
+})
+router.post('/api/sendCheckCode', async (ctx, next) => {
+    ctx.response.body = await sendCheckCode(ctx.request.body)
 })
 router.get('/api/testUniqueID', async (ctx,next) => {
     ctx.response.body = await testUniqueID(ctx.query)

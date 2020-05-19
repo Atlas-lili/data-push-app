@@ -71,7 +71,7 @@ exports.addSub = async function(reqBody){
         }
     }catch(err){
         return {
-            code: '004',
+            code: '005',
             info: '数据库错误'
         }
     } 
