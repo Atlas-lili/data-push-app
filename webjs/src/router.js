@@ -2,21 +2,21 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Log from './views/Log/index'
 import Sys from './views/Sys/index'
-import WeatherAitNowView from './views/WeatherAirNow/index'
-import WeatherAitNow from './components/WeatherAirNow'
-import WeatherHistoryView from './views/WeatherHistory/index'
-import WeatherHistory from './components/WeatherHistory'
-import EpidemicTotals from './components/TotalHistory'
-import EpidemicNow from './views/EpidemicNow/index'
-import EpidemicNows from './components/TotalLocalization'
-import EpidemicPatient from './views/EpidemicPatient/index'
-import EpidemicPatients from './components/CityDCSpecific'
-import EpidemicCity from './views/EpidemicCity/index'
-import EpidemicCitys from './components/ProvinceLocalization'
+// import WeatherAitNowView from './views/WeatherAirNow/index'
+// import WeatherAitNow from './components/WeatherAirNow'
+// import WeatherHistoryView from './views/WeatherHistory/index'
+// import WeatherHistory from './components/WeatherHistory'
+// import EpidemicTotals from './components/TotalHistory'
+// import EpidemicNow from './views/EpidemicNow/index'
+// import EpidemicNows from './components/TotalLocalization'
+// import EpidemicPatient from './views/EpidemicPatient/index'
+// import EpidemicPatients from './components/CityDCSpecific'
+// import EpidemicCity from './views/EpidemicCity/index'
+// import EpidemicCitys from './components/ProvinceLocalization'
 
 import City from './views/City/index'
 import ConfSub from './views/ConfSub/index'
-import EpidemicTotal from './views/EpidemicTotal/index'
+// import EpidemicTotal from './views/EpidemicTotal/index'
 
 Vue.use(Router)
 
@@ -41,7 +41,7 @@ export default new Router({
         {
           path: 'weather-air-now/:city_name?',
           name:'weather-air-now',
-          component:WeatherAitNowView,
+          component:()=>import('./views/WeatherAirNow/index'),
           props: true
         },{
           path: 'weather-air-now/city/:city_name?',
@@ -51,7 +51,7 @@ export default new Router({
         },{
           path: 'weather-history/:city_name?',
           name:'weather-history',
-          component:WeatherHistoryView,
+          component:()=>import('./views/WeatherHistory/index'),
           props: true
         },{
           path: 'weather-history/city/:city_name?',
@@ -61,19 +61,19 @@ export default new Router({
         },{
           path: 'epidemic-total',
           name: 'epidemic-total',
-          component: EpidemicTotal
+          component: ()=>import('./views/EpidemicTotal/index')
         },{
           path: 'epidemic-now',
           name: 'epidemic-now',
-          component: EpidemicNow
+          component: ()=>import('./views/EpidemicNow/index')
         },{
           path: 'epidemic-patient-relation',
           name: 'epidemic-patient-relation',
-          component: EpidemicPatient
+          component: ()=>import('./views/EpidemicPatient/index')
         },{
           path: 'epidemic-city-relation',
           name: 'epidemic-city-relation',
-          component: EpidemicCity
+          component: ()=>import('./views/EpidemicCity/index')
         },{
           path: 'default-city',
           name:'default-city',
@@ -86,27 +86,27 @@ export default new Router({
       ]
     }, {
       path: '/push/weather-air-now/:city',
-      component:WeatherAitNow,
+      component:()=>import('./components/WeatherAirNow'),
       props: true
     }, {
       path: '/push/weather-history/:city',
-      component:WeatherHistory,
+      component:()=>import('./components/WeatherHistory'),
       props: true
     }, {
       path:'/push/epidemic-total',
-      component:EpidemicTotals,
+      component:()=>import('./components/TotalHistory'),
       props:true
     }, {
       path:'/push/epidemic-now',
-      component:EpidemicNows,
+      component:()=>import('./components/TotalLocalization'),
       props:true
     }, {
       path:'/push/epidemic-patient-relation',
-      component:EpidemicPatients,
+      component:()=>import('./components/CityDCSpecific'),
       props:true    
     }, {
       path:'/push/epidemic-city-relation',
-      component:EpidemicCitys,
+      component:()=>import('./components/ProvinceLocalization'),
       props:true   
     }
   ]
