@@ -82,7 +82,7 @@ async function shotImg (chartstr,date){
 
 exports.scheduleCronstyle = ()=>{
   //每分钟的第30秒定时执行一次:30 * * * * *  0 0 5 * * *
-    schedule.scheduleJob('30 * * * * *',async function(){
+    schedule.scheduleJob('0 0 5 * * *',async function(){
       var date = new Date();
       var d = date.getDate();
       var m = date.getMonth()+1;
