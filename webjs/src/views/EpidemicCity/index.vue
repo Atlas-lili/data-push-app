@@ -1,20 +1,16 @@
 <template>
-    <div class="page">
-        <total-localization class="chart-center"></total-localization>
-    </div>
+  <div class="page">
+    <province-localization class="chart-center"></province-localization>
+  </div>
 </template>
 
 <script>
-import staticdata from '../../../public/epidemic.json';
-import TotalLocalization from '../../components/TotalLocalization';
-async function getStatus() {
-    var res = staticdata;
-    return res.data;
-}
+import ProvinceLocalization from '../../components/ProvinceLocalization';
+
 export default {
-    name:'EpidemicNow',
+    name:'EpidemicCity',
     components: {
-        TotalLocalization,
+        ProvinceLocalization
     }
 }
 </script>

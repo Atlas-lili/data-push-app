@@ -1,23 +1,40 @@
 <template>
-    <div class="total-localization-container">
-        <e-chart ref="toggle" :isMap="true" :mapConfig="{name: detailProvince, json: mapJson}" :option="option" :beforLoad="setMap" :onClick="onCheak" :height="600" :width="800"></e-chart>
-        <!-- <veui-overlay
-            target="toggle"
-            position="top-start"
-            :open.sync="isOverlayShow"
-            overlay-class="relative-overlay"
-        >
-            <div v-outside:toggle="overlayHide">
-                <province-detail :provinceName="detailProvince" :provinceData="detailData"></province-detail>
+    <el-row :gutter="20">
+        <el-col :span="24">
+        <el-card class="box-card">
+            <div slot="header" class="clearfix">
+            <span>各省市疫情概览</span>
+            <sub-btn url="/api/addSub" :params="{token:this.$store.getters.Userinfo.token,chartstr:'TotalLocalization'}" :disabled="disable1"></sub-btn>
             </div>
-        </veui-overlay> -->
-    </div>
+            <div class="total-localization-container">
+                <e-chart ref="toggle" :isMap="true" :mapConfig="{name: detailProvince, json: mapJson}" :option="option" :beforLoad="setMap" :onClick="onCheak" :height="600" :width="1040"></e-chart>
+                <!-- <veui-overlay
+                    target="toggle"
+                    position="top-start"
+                    :open.sync="isOverlayShow"
+                    overlay-class="relative-overlay"
+                >
+                    <div v-outside:toggle="overlayHide">
+                        <province-detail :provinceName="detailProvince" :provinceData="detailData"></province-detail>
+                    </div>
+                </veui-overlay> -->
+            </div>
+        </el-card>
+        </el-col>
+    </el-row>
 </template>
 
 <script>
 import http from 'axios';
 import EChart from './Echart';
 import ProvinceDetail from './ProvinceDetail';
+import subBtn from './SubBtn';
+
+import staticdata from '../../public/epidemic.json';
+async function getStatus() {
+    var res = staticdata;
+    return res.data;
+}
 
 async function getMapJson(province) {
     var res = await http.request({
@@ -34,6 +51,7 @@ export default {
     name: 'TotalLocalization',
     data() {
         return {
+            area: [],
             provincesData: [],
             citiesData: [],
             provincesDetailMap: {},
@@ -44,21 +62,22 @@ export default {
             mapJson: null
         };
     },
-    props: {
-        status: {
-            type: Array,
-            required: true
-        }
-    },
     computed: {
+        disable1(){
+        var chartstr = 'TotalLocalization'
+            if(Array.isArray(this.$store.getters.Userinfo.subList)&&this.$store.getters.Userinfo.subList.indexOf(chartstr)!=-1){
+                return true;
+            }
+            return false;
+        },
         option: function () {
             return {
-                backgroundColor: '#404a59',
+                backgroundColor: '#fff',
                 title: {
                     text: `${(this.detailProvince === 'China') ? '各省' : this.detailProvince} 确诊人数图`,
                     left: 'center',
                     textStyle: {
-                        color: '#ccc'
+                        color: '#404a59'
                     }
                 },
                 tooltip: {
@@ -97,7 +116,7 @@ export default {
                         {min: 1, max: 9, color: '#CCCC00'}
                     ],
                     textStyle: {
-                        color: '#ffffff'
+                        color: '#404a59'
                     },
                     left: '20%',
                     bottom: '20%'
@@ -123,14 +142,44 @@ export default {
         }
     },
     watch: {
-        status: function () {
+        area: function () {
             this.transformStatusToData();
         }
     },
     methods: {
+        update() {
+            getStatus()
+                .then(res => {
+                    if (!res) {
+                        this.$toast.error('拉取数据失败！');
+                        return;
+                    }
+                    this.catchArea(res);
+                });
+        },
+        catchArea({area}) {
+            let simpleArea = [];
+            for (let P of area) {
+                let {provinceName, confirmedCount, curedCount, deadCount, suspectedCount, cities, yesterdayIncreased} = P;
+                simpleArea.push({
+                    provinceName,
+                    confirmedCount,
+                    curedCount,
+                    deadCount,
+                    suspectedCount,
+                    cities,
+                    history: [{
+                        confirmedCount, curedCount, deadCount, suspectedCount
+                    }, {
+                        ...yesterdayIncreased
+                    }]
+                });
+            }
+            this.area = simpleArea;
+        },
         transformStatusToData: function () {
             this.provincesData.splice(0);
-            for (let item of this.status) {
+            for (let item of this.area) {
                 this.provincesData.push({
                     name: item.provinceName,
                     value: item.confirmedCount
@@ -176,21 +225,26 @@ export default {
             }
         }
     },
-    created: async function () {
+    created:async function () {
+        this.update();
         await this.setMap('China');
         this.transformStatusToData();
     },
     components: {
         EChart,
-        ProvinceDetail
+        ProvinceDetail,
+        subBtn
     }
 };
 </script>
 
-<style >
+<style lang="scss" scoped>
+.box-card{
+  margin: 0 auto;
+  width: 1080px;
+}
 .total-localization-container{
     height:600px;
-    width:800px;
 }
 .relative-overlay{
     width:800px;

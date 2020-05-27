@@ -18,7 +18,13 @@ export var listMap = [{
         txt: '疫情概览'
     }, {
         index: 'epidemic-now',
-        txt: '疫情概览x'
+        txt: '各省（市）确诊人数图'
+    }, {
+        index: 'epidemic-patient-relation',
+        txt: '各市（县）患者转化图'
+    }, {
+        index: 'epidemic-city-relation',
+        txt: '各省（市）地缘-确诊关系'
     }]
 }, {
     key: '3th',

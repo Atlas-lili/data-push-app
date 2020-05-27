@@ -1,13 +1,32 @@
 <template>
-    <e-chart :option="option"></e-chart>
+    <el-row :gutter="20">
+        <el-col :span="24">
+        <el-card class="box-card">
+            <div slot="header" class="clearfix">
+            <span>各县市患者转换关系</span>
+            <sub-btn url="/api/addSub" :params="{token:this.$store.getters.Userinfo.token,chartstr:'CityDCSpecific'}" :disabled="disable1"></sub-btn>
+            </div>
+            <div class="box-body">
+                <e-chart :option="option" :height="400"></e-chart>
+            </div>
+        </el-card>
+        </el-col>
+    </el-row>
 </template>
 
 <script>
 import EChart from './Echart';
+import subBtn from './SubBtn';
+import staticdata from '../../public/epidemic.json';
+async function getStatus() {
+    var res = staticdata;
+    return res.data;
+}
 export default {
     name: 'CityDCSpecific',
     data() {
         return {
+            city: {},
             cityScatter: {
                 type: 'scatter',
                 symbolSize: 10,
@@ -37,13 +56,14 @@ export default {
             }
         };
     },
-    props: {
-        status: {
-            type: Object,
-            required: true
-        }
-    },
     computed: {
+        disable1(){
+            var chartstr = 'CityDCSpecific'
+            if(Array.isArray(this.$store.getters.Userinfo.subList)&&this.$store.getters.Userinfo.subList.indexOf(chartstr)!=-1){
+              return true;
+            }
+            return false;
+        },
         option() {
             return {
                 title: {
@@ -95,10 +115,36 @@ export default {
         }
     },
     methods: {
+        update() {
+            getStatus()
+                .then(res => {
+                    if (!res) {
+                        this.$toast.error('拉取数据失败！');
+                        return;
+                    }
+                    this.catchCity(res);
+                });
+        },
+        catchCity({area}) {
+            let citiesMap = {};
+            let needlessList = ['外来务工人员', '未明确地区', '外地来沪人员'];
+            for (let P of area) {
+                for (let C of P.cities) {
+                    if (~needlessList.indexOf(C.cityName) || !C.confirmedCount) continue;
+                    citiesMap[C.cityName] = C;
+                }
+            }
+            this.city = citiesMap;
+        },
         transformStatusToData() {
-            Object.assign(this.$data, this.$options.data());
-            for (let cityName in this.status) {
-                let {confirmedCount, curedCount, deadCount} = this.status[cityName];
+            for (let item in this.$options.data()) {
+                if (item === 'city') {
+                    continue;
+                }
+                this.$data[item] = this.$options.data()[item];
+            }
+            for (let cityName in this.city) {
+                let {confirmedCount, curedCount, deadCount} = this.city[cityName];
                 let deadSpecific = deadCount && deadCount / confirmedCount;
                 let curedSpecific = curedCount && curedCount / confirmedCount;
                 this.cityScatter.data.push([curedSpecific, deadSpecific, confirmedCount, cityName]);
@@ -106,17 +152,21 @@ export default {
         }
     },
     watch: {
-        status: function () {
+        city: function () {
             this.transformStatusToData();
         }
     },
     created() {
+        this.update();
         this.transformStatusToData();
     },
-    components: {EChart}
+    components: {EChart,subBtn}
 };
 </script>
 
-<style>
-
+<style lang="scss" scoped>
+.box-card{
+  margin: 0 auto;
+  width: 1080px;
+}
 </style>

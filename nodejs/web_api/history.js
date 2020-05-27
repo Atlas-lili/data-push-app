@@ -18,11 +18,15 @@ exports.history = async function (reqBody){
                 if(error){
                     rej(new Error(error))
                 }else{
-                    body = JSON.parse(body);
-                    if(body.HeWeather6[0].status!=='ok'){
-                        rej(new Error(body.HeWeather6[0].status))
-                    } else {
-                        res(body.HeWeather6[0].daily_forecast)
+                    try{
+                        body = JSON.parse(body);
+                        if(body.HeWeather6[0].status!=='ok'){
+                            rej(new Error(body.HeWeather6[0].status))
+                        } else {
+                            res(body.HeWeather6[0].daily_forecast)
+                        }
+                    }catch(err){
+                        rej(err);
                     }
                 }
             });

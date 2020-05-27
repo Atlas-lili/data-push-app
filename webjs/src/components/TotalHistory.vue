@@ -1,13 +1,32 @@
 <template>
-    <e-chart :option="option" :height="400"></e-chart>
+    <el-row :gutter="20">
+        <el-col :span="24">
+        <el-card class="box-card">
+            <div slot="header" class="clearfix">
+            <span>全国疫情概览</span>
+            <sub-btn url="/api/addSub" :params="{token:this.$store.getters.Userinfo.token,chartstr:'TotalHistory'}" :disabled="disable1"></sub-btn>
+            </div>
+            <div class="box-body">
+                <e-chart :option="option" :height="400"></e-chart>
+            </div>
+        </el-card>
+        </el-col>
+    </el-row>
 </template>
 
 <script>
 import EChart from './Echart';
+import subBtn from './SubBtn';
+import staticdata from '../../public/epidemic.json';
+async function getStatus() {
+    var res = staticdata;
+    return res.data;
+}
 export default {
     name: 'TotalHistory',
     data() {
         return {
+            history: [],
             timeLine: {
                 type: 'category',
                 // boundaryGap: false,
@@ -67,6 +86,13 @@ export default {
         };
     },
     computed: {
+        disable1(){
+            var chartstr = 'TotalHistory'
+            if(Array.isArray(this.$store.getters.Userinfo.subList)&&this.$store.getters.Userinfo.subList.indexOf(chartstr)!=-1){
+              return true;
+            }
+            return false;
+        },
         option() {
             return {
                 title: {
@@ -122,18 +148,29 @@ export default {
             };
         }
     },
-    props: {
-        status: {
-            type: Array,
-            required: true
-        }
-    },
     watch: {
-        status: function () {
+        history: function () {
             this.transformStatusToData();
         }
     },
     methods: {
+        catchHistory({history}) {
+            this.history = history;
+        },
+        catchTotal({date, diagnosed, suspect, death, cured}) {
+            this.totalStatus = {date, diagnosed, suspect, death, cured};
+        },
+        update() {
+            getStatus()
+                .then(res => {
+                    if (!res) {
+                        this.$toast.error('拉取数据失败！');
+                        return;
+                    }
+                    this.catchTotal(res);
+                    this.catchHistory(res);
+                });
+        },
         transformStatusToData() {
             const codeMap = {
                 timeLine: 'date',
@@ -142,8 +179,13 @@ export default {
                 deathLine: 'deathsNum',
                 curedLine: 'curesNum'
             };
-            Object.assign(this.$data, this.$options.data());
-            for (let item of this.status) {
+            for (let item in this.$options.data()) {
+                if (item === 'history') {
+                    continue;
+                }
+                this.$data[item] = this.$options.data()[item];
+            }
+            for (let item of this.history) {
                 for (let code in codeMap) {
                     this[code].data.unshift(item[codeMap[code]]);
                 }
@@ -158,12 +200,16 @@ export default {
         }
     },
     created: function () {
+        this.update();
         this.transformStatusToData();
     },
-    components: {EChart}
+    components: {EChart, subBtn}
 };
 </script>
 
-<style>
-
+<style lang="scss" scoped>
+.box-card{
+  margin: 0 auto;
+  width: 1080px;
+}
 </style>

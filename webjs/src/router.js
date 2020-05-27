@@ -6,7 +6,13 @@ import WeatherAitNowView from './views/WeatherAirNow/index'
 import WeatherAitNow from './components/WeatherAirNow'
 import WeatherHistoryView from './views/WeatherHistory/index'
 import WeatherHistory from './components/WeatherHistory'
+import EpidemicTotals from './components/TotalHistory'
 import EpidemicNow from './views/EpidemicNow/index'
+import EpidemicNows from './components/TotalLocalization'
+import EpidemicPatient from './views/EpidemicPatient/index'
+import EpidemicPatients from './components/CityDCSpecific'
+import EpidemicCity from './views/EpidemicCity/index'
+import EpidemicCitys from './components/ProvinceLocalization'
 
 import City from './views/City/index'
 import ConfSub from './views/ConfSub/index'
@@ -18,7 +24,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: 'Login'
+      redirect: 'Sys/weather-air-now'
     }, {
       path: '/Login',
       name: 'Login',
@@ -53,13 +59,21 @@ export default new Router({
           component: City,
           props: true
         },{
+          path: 'epidemic-total',
+          name: 'epidemic-total',
+          component: EpidemicTotal
+        },{
           path: 'epidemic-now',
           name: 'epidemic-now',
           component: EpidemicNow
         },{
-          path: 'epidemic-total',
-          name: 'epidemic-total',
-          component: EpidemicTotal
+          path: 'epidemic-patient-relation',
+          name: 'epidemic-patient-relation',
+          component: EpidemicPatient
+        },{
+          path: 'epidemic-city-relation',
+          name: 'epidemic-city-relation',
+          component: EpidemicCity
         },{
           path: 'default-city',
           name:'default-city',
@@ -78,6 +92,22 @@ export default new Router({
       path: '/push/weather-history/:city',
       component:WeatherHistory,
       props: true
+    }, {
+      path:'/push/epidemic-total',
+      component:EpidemicTotals,
+      props:true
+    }, {
+      path:'/push/epidemic-now',
+      component:EpidemicNows,
+      props:true
+    }, {
+      path:'/push/epidemic-patient-relation',
+      component:EpidemicPatients,
+      props:true    
+    }, {
+      path:'/push/epidemic-city-relation',
+      component:EpidemicCitys,
+      props:true   
     }
   ]
 })

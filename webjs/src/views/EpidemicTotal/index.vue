@@ -8,35 +8,19 @@
                 <div class="content">{{totalStatus[item.EN]}}</div>
             </el-col>
         </el-row>
-        <total-history :status="history" class="chart-center"></total-history>
-        <total-localization :status="area"  class="chart-center"></total-localization>
-        <city-d-c-specific :status="city"  class="chart-center"></city-d-c-specific>
-        <province-localization :status="area" class="chart-center"></province-localization>
+        <!-- <total-history :status="history" class="chart-center"></total-history> -->
+        <total-history class="chart-center"></total-history>
     </div>
 </template>
 
 <script>
 import http from 'axios';
-
+import staticdata from '../../../public/epidemic.json';
 import TotalHistory from '../../components/TotalHistory';
-import TotalLocalization from '../../components/TotalLocalization';
-import CityDCSpecific from '../../components/CityDCSpecific';
-import ProvinceLocalization from '../../components/ProvinceLocalization';
+
 async function getStatus() {
-    var res = await http.request({
-        // url: 'https://www.tianqiapi.com/api',
-        url: '/epidemic.json',
-        method: 'get',
-        params: {
-            version: 'epidemic',
-            appid: '46933394',
-            appsecret: 'RHE7MNqo'
-        }
-    });
-    if (res.status !== 200 || res.data.errcode !== 0) {
-        return null;
-    }
-    return res.data.data;
+    var res = staticdata;
+    return res.data;
 }
 export default {
     name: 'App',
@@ -57,10 +41,7 @@ export default {
                 suspect: 0,
                 death: 0,
                 cured: 0
-            },
-            history: [],
-            area: [],
-            city: {}
+            }
         };
     },
     methods: {
@@ -72,47 +53,10 @@ export default {
                         return;
                     }
                     this.catchTotal(res);
-                    this.catchHistory(res);
-                    this.catchArea(res);
-                    this.catchCity(res);
                 });
         },
         catchTotal({date, diagnosed, suspect, death, cured}) {
             this.totalStatus = {date, diagnosed, suspect, death, cured};
-        },
-        catchHistory({history}) {
-            this.history = history;
-        },
-        catchArea({area}) {
-            let simpleArea = [];
-            for (let P of area) {
-                let {provinceName, confirmedCount, curedCount, deadCount, suspectedCount, cities, yesterdayIncreased} = P;
-                simpleArea.push({
-                    provinceName,
-                    confirmedCount,
-                    curedCount,
-                    deadCount,
-                    suspectedCount,
-                    cities,
-                    history: [{
-                        confirmedCount, curedCount, deadCount, suspectedCount
-                    }, {
-                        ...yesterdayIncreased
-                    }]
-                });
-            }
-            this.area = simpleArea;
-        },
-        catchCity({area}) {
-            let citiesMap = {};
-            let needlessList = ['外来务工人员', '未明确地区', '外地来沪人员'];
-            for (let P of area) {
-                for (let C of P.cities) {
-                    if (~needlessList.indexOf(C.cityName) || !C.confirmedCount) continue;
-                    citiesMap[C.cityName] = C;
-                }
-            }
-            this.city = citiesMap;
         }
     },
     created: function () {
@@ -120,9 +64,6 @@ export default {
     },
     components: {
         TotalHistory,
-        TotalLocalization,
-        CityDCSpecific,
-        ProvinceLocalization
     }
 };
 </script>
@@ -134,7 +75,7 @@ export default {
     -moz-osx-font-smoothing: grayscale;
     text-align: left;
     color: #2c3e50;
-    margin-top: 30px;
+    margin: 24px;
     &>h1{text-align: center;}
     .date{
         font-size: 15px;

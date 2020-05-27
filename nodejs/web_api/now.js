@@ -18,11 +18,15 @@ exports.weatherNow = async function (reqBody){
                 if(error){
                     rej(new Error(error))
                 }else{
-                    body = JSON.parse(body);
-                    if(body.HeWeather6[0].status!=='ok'){
-                        rej(new Error(body.HeWeather6[0].status))
-                    } else {
-                        res(body.HeWeather6[0].now)
+                    try{
+                        body = JSON.parse(body);
+                        if(body.HeWeather6[0].status!=='ok'){
+                            rej(new Error(body.HeWeather6[0].status))
+                        } else {
+                            res(body.HeWeather6[0].now)
+                        }
+                    }catch(err){
+                        rej(err);
                     }
                 }
             });
@@ -59,11 +63,15 @@ exports.airNow = async function (reqBody){
                 if(error){
                     rej(new Error(error))
                 }else{
-                    body = JSON.parse(body);
-                    if(body.HeWeather6[0].status!=='ok'){
-                        rej(new Error(body.HeWeather6[0].status))
-                    } else {
-                        res(body.HeWeather6[0].air_now_city)
+                    try{
+                        body = JSON.parse(body);
+                        if(body.HeWeather6[0].status!=='ok'){
+                            rej(new Error(body.HeWeather6[0].status))
+                        } else {
+                            res(body.HeWeather6[0].air_now_city)
+                        }
+                    }catch(err){
+                        rej(err);
                     }
                 }
             });

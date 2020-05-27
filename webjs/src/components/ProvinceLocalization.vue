@@ -1,15 +1,34 @@
 <template>
-    <e-chart :option="option"></e-chart>
+    <el-row :gutter="20">
+        <el-col :span="24">
+        <el-card class="box-card">
+            <div slot="header" class="clearfix">
+            <span>各省市地缘确认病例关系</span>
+            <sub-btn url="/api/addSub" :params="{token:this.$store.getters.Userinfo.token,chartstr:'ProvinceLocalization'}" :disabled="disable1"></sub-btn>
+            </div>
+            <div class="box-body">
+                <e-chart :option="option"></e-chart>
+            </div>
+        </el-card>
+        </el-col>
+    </el-row>
 </template>
 
 <script>
 import EChart from './Echart';
 import localizationMap from './localizationMap.json';
+import subBtn from './SubBtn';
+import staticdata from '../../public/epidemic.json';
+async function getStatus() {
+    var res = staticdata;
+    return res.data;
+}
 
 export default {
     name: 'ProvinceLocalization',
     data() {
         return {
+            area: [],
             nodes: [],
             links: [],
             categories: [
@@ -22,13 +41,14 @@ export default {
             ]
         };
     },
-    props: {
-        status: {
-            type: Array,
-            required: true
-        }
-    },
     computed: {
+        disable1(){
+            var chartstr = 'ProvinceLocalization'
+            if(Array.isArray(this.$store.getters.Userinfo.subList)&&this.$store.getters.Userinfo.subList.indexOf(chartstr)!=-1){
+              return true;
+            }
+            return false;
+        },
         option: function () {
             return {
                 title: {
@@ -76,9 +96,39 @@ export default {
         }
     },
     methods: {
+        update() {
+            getStatus()
+                .then(res => {
+                    if (!res) {
+                        this.$toast.error('拉取数据失败！');
+                        return;
+                    }
+                    this.catchArea(res);
+                });
+        },
+        catchArea({area}) {
+            let simpleArea = [];
+            for (let P of area) {
+                let {provinceName, confirmedCount, curedCount, deadCount, suspectedCount, cities, yesterdayIncreased} = P;
+                simpleArea.push({
+                    provinceName,
+                    confirmedCount,
+                    curedCount,
+                    deadCount,
+                    suspectedCount,
+                    cities,
+                    history: [{
+                        confirmedCount, curedCount, deadCount, suspectedCount
+                    }, {
+                        ...yesterdayIncreased
+                    }]
+                });
+            }
+            this.area = simpleArea;
+        },
         transformStatusToData() {
             this.nodes.splice(0);
-            for (let P of this.status) {
+            for (let P of this.area) {
                 let category = 0;
                 category = this.categories.findIndex(item => {
                     return P.confirmedCount >= item.min && (!item.max || P.confirmedCount <= item.max);
@@ -110,18 +160,22 @@ export default {
         }
     },
     watch: {
-        status: function () {
+        area: function () {
             this.transformStatusToData();
         }
     },
     created() {
+        this.update();
         this.setLink();
         this.transformStatusToData();
     },
-    components: {EChart}
+    components: {EChart, subBtn}
 };
 </script>
 
-<style>
-
+<style scoped>
+.box-card{
+  margin: 0 auto;
+  width: 1080px;
+}
 </style>

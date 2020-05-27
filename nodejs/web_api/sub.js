@@ -4,6 +4,8 @@ var chartMap = {
     "AirNow":[],
     "WeatherHistory":[]
 }
+var chartMap2 = ["TotalHistory","TotalLocalization","CityDCSpecific","ProvinceLocalization"];
+
 exports.addSub = async function(reqBody){
     const {token,chartstr} = reqBody;
     if ((!token)||(!chartstr)){
@@ -12,7 +14,7 @@ exports.addSub = async function(reqBody){
             info: '参数缺失'
         }
     }
-    if(chartstr.indexOf('-')===-1){
+    if(chartstr.indexOf('-')===-1 && !chartMap2.includes(chartstr)){
         return {
             code: '003',
             info: '无效chartstr'
@@ -41,6 +43,10 @@ exports.addSub = async function(reqBody){
         }
         return false;
     })(chart,time)
+    if(chartMap2.includes(chartstr)){
+        haveCity = true;
+        safeName = true;
+    }
     if(!(haveCity&&safeName)){
         return {
             code: '003',

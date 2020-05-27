@@ -44,6 +44,12 @@ var chartsMap = {
     AirNow: '当前空气质量',
     WeatherHistory: '近日天气'
 }
+var chartsMap2 = {
+    TotalHistory:"全国疫情概览",
+    TotalLocalization:"各省市疫情概览",
+    CityDCSpecific:"各县市患者转换关系",
+    ProvinceLocalization:"各省市地缘确认病例关系"
+}
 
 export default {
     data() {
@@ -81,6 +87,7 @@ export default {
                 this.$store.commit('assignUserinfo',{needSub:res.data.data})
             })
         },
+        //订阅疫情修改
         transformList(list){
             if(!list.length) {
                 this.subList = [];
@@ -88,10 +95,17 @@ export default {
             }
             this.subList = list;
             this.sortList =  list.map(item=>{
-                var [city, chart] = item.split('-');
-                return{
-                    EN: item,
-                    CN: this.citysMap[city]+'-'+this.chartsMap[chart]
+                if(!item.includes('-')){
+                    return{
+                        EN: item,
+                        CN: this.chartsMap2[item]
+                    }
+                } else {
+                    var [city, chart] = item.split('-');
+                    return{
+                        EN: item,
+                        CN: this.citysMap[city]+'-'+this.chartsMap[chart]
+                    }
                 }
             });
         },
@@ -143,6 +157,7 @@ export default {
         }
         this.citysMap = citysMap;
         this.chartsMap = chartsMap;
+        this.chartsMap2 = chartsMap2;
         this.needSub = this.Userinfo.needSub;
         this.transformList(this.Userinfo.subList);
     },

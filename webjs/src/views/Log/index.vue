@@ -93,7 +93,6 @@ export default {
     },
     beforeRouteUpdate (to, from, next) {
         this.$data.activeName = to.name
-        console.log(to.name)
         next()
     }
   }
