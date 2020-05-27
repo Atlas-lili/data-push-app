@@ -97,11 +97,11 @@ exports.scheduleCronstyle = ()=>{
           html+=`<div><p>${sub}---<a href="${chartConf[chart||sub].href}">查看详情</a></p><img src="${src}" alt="${sub}" /></div>`
         }
         if(html){
-          // pushMail({
-          //   to: u.email,
-          //   html,
-          //   subject: `${y}年${m}月${d}日-给${u.ID}的天气报表`,
-          // })
+          pushMail({
+            to: u.email,
+            html,
+            subject: `${y}年${m}月${d}日-给${u.ID}的天气报表`,
+          })
         }
       }
     }); 
