@@ -31,7 +31,8 @@ const chartConf = {
   "TotalLocalization":{
     url:"push/epidemic-now/",
     href:"http://www.alfredqwang.cn/#/Sys/epidemic-now",
-    clip:{x:143,y:0,width:1084,height:698}
+    clip:{x:143,y:0,width:1084,height:698},
+    mount: true
   },
   "CityDCSpecific":{
     url:"push/epidemic-patient-relation/",
