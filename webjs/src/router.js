@@ -87,26 +87,32 @@ export default new Router({
     }, {
       path: '/push/weather-air-now/:city',
       component:()=>import('./components/WeatherAirNow'),
+      // component: WeatherAitNow,
       props: true
     }, {
       path: '/push/weather-history/:city',
       component:()=>import('./components/WeatherHistory'),
+      // component: WeatherHistory,
       props: true
     }, {
       path:'/push/epidemic-total',
       component:()=>import('./components/TotalHistory'),
+      // component: EpidemicTotals,
       props:true
     }, {
       path:'/push/epidemic-now',
       component:()=>import('./components/TotalLocalization'),
+      // component: EpidemicNows,
       props:true
     }, {
       path:'/push/epidemic-patient-relation',
       component:()=>import('./components/CityDCSpecific'),
+      // component: EpidemicPatients,
       props:true    
     }, {
       path:'/push/epidemic-city-relation',
       component:()=>import('./components/ProvinceLocalization'),
+      // component: EpidemicCitys,
       props:true   
     }
   ]
