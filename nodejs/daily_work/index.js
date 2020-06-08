@@ -75,7 +75,7 @@ async function shotImg (chartstr,date){
     }
   }catch(err){}
   if (chartConf[city === chartstr? chartstr : chart].mount) {
-    await holdTime(900);
+    await holdTime(1000);
   }
   await page.screenshot({ path: join(__dirname,`../assets/charts/${date.y}-${date.m}-${date.d}/${chartstr}.png`),clip:chartConf[city === chartstr? chartstr : chart].clip});
   browser.close();
