@@ -9,12 +9,14 @@ const chartConf = {
   "WeatherNow":{
     url:"push/weather-air-now/",
     href:"http://www.alfredqwang.cn/#/Sys/weather-air-now",
-    clip:{x:66,y:0,width:542,height:360}
+    clip:{x:66,y:0,width:542,height:360},
+    mount: true
   },
   "AirNow":{
     url:"push/weather-air-now/",
     href:"http://www.alfredqwang.cn/#/Sys/weather-air-now",
-    clip:{x:758,y:0,width:542,height:360}
+    clip:{x:758,y:0,width:542,height:360},
+    mount: true
   },
   "WeatherHistory":{
     url:"push/weather-history/",
@@ -44,6 +46,7 @@ const chartConf = {
     url:"push/epidemic-city-relation/",
     href:"http://www.alfredqwang.cn/#/Sys/epidemic-city-relation",
     clip:{x:143,y:0,width:1084,height:418},
+    mount: true
   }
 }
 
@@ -56,7 +59,10 @@ function holdTime(ms) {
 }
 
 async function shotImg (chartstr,date){
-  const [city,chart,time] = chartstr.split("-")
+  const [city,chart,time] = chartstr.split("-");
+  if (fs.existsSync(join(__dirname,`../assets/charts/${date.y}-${date.m}-${date.d}/${chartstr}.png`))) {
+    return;
+  }
   const browser = await puppeteer.launch({ headless:true,args: ['--no-sandbox']});
   const page = await browser.newPage();
   if (city === chartstr) {
@@ -75,7 +81,7 @@ async function shotImg (chartstr,date){
     }
   }catch(err){}
   if (chartConf[city === chartstr? chartstr : chart].mount) {
-    await holdTime(1000);
+    await holdTime(800);
   }
   await page.screenshot({ path: join(__dirname,`../assets/charts/${date.y}-${date.m}-${date.d}/${chartstr}.png`),clip:chartConf[city === chartstr? chartstr : chart].clip});
   browser.close();
