@@ -4,8 +4,9 @@ import router from './router'
 import store from './store'
 
 // import ElementUI from 'element-ui';
-// import 'element-ui/lib/theme-chalk/index.css';
+import 'element-ui/lib/theme-chalk/index.css';
 
+Vue.config.productionTip = false;
 import {
   Row,
   Col,
@@ -31,10 +32,13 @@ import {
   MenuItem,
   Tag,
   Loading,
-  Message
+  Message,
+  Image,
+  MenuItemGroup,
+  Link
 } from 'element-ui';
-
-
+Vue.use(Link);
+Vue.use(MenuItemGroup);
 Vue.use(Menu);
 Vue.use(Submenu);
 Vue.use(MenuItem);
@@ -64,7 +68,6 @@ Vue.use(Loading.directive);
 Vue.prototype.$loading = Loading.service;
 Vue.prototype.$message = Message;
 
-Vue.config.productionTip = false;
 
 
 new Vue({
