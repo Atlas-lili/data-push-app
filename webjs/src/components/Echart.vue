@@ -64,6 +64,12 @@ export default {
             this.chartInstance = chart;
             return chart;
         }
+    },
+    mounted() {
+         if (this.isMap && this.mapConfig.name && this.mapConfig.json) {
+            echarts.registerMap(this.mapConfig.name, this.mapConfig.json);
+        }
+        this.renderChart(this.option);
     }
 };
 </script>

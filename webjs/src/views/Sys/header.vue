@@ -1,12 +1,12 @@
 <template>
 	<el-row type='flex' justify='space-between' align='middle' tag='header'>
 		<el-col :span='4' class='header-left'>
-			<img src="../../assets/img/logo.png" class="logo" alt="LOGO" /><h1 class="title">天气数据报表系统</h1>
+			<img src="../../assets/img/logo.png" class="logo" alt="LOGO" /><h1 class="title">数据报表系统</h1>
 		</el-col>
 		<el-col :span='8' class='header-right'>
 			<el-tooltip class="item" effect="dark" placement="bottom-start">
 				<span>{{this.Userinfo.city}}欢迎你！</span>
-				<div slot="content">该城市为各页面默认展示城市<br/>会员用户可在相关页面更改城市</div>
+				<div slot="content">会员用户可在相关页面更改城市</div>
 			</el-tooltip>
 			<span class="user" v-popover:popover5 v-if="Userinfo.ID">Hi,{{this.Userinfo.ID}}</span>
 			<span class="user" v-else><router-link to="/Login">登录</router-link>获取更多功能哦！</span>

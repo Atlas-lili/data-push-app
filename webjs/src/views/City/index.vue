@@ -9,6 +9,9 @@
   </el-tag>
     </div>
     <el-form :inline="true" :model="formInline" class="form-inline">
+      <el-form-item>
+        <el-link @click="searchByIp" class="link" icon="el-icon-location">定位</el-link>
+      </el-form-item>
       <el-form-item label="省级">
         <el-select v-model="formInline.Province_name" clearable placeholder="--请选择--"  @change="handleChange1">
           <el-option
@@ -45,6 +48,9 @@
 .form-inline{
   display: flex;
   justify-content: center;
+}
+.el-link.is-underline.link:hover:after {
+  border-bottom: none;
 }
 </style>
 
@@ -98,6 +104,35 @@ export default {
       }
     },
     methods:{
+      searchByIp(){
+        axios.get('/api/ipSearch').then(res => {
+          if(res.data.code!=='000'){
+            this.$message.error('定位失败');
+          } else {
+            let res = {data: {
+              data: {
+                city: "大连市",
+                region: "辽宁省"
+              }
+            }}
+            let city = cMap[res.data.data.city]
+            if(!city){
+              this.$message.error('定位失败');
+            } else {
+              this.$message({
+                message: '定位成功：'+city.name,
+                type: 'success'
+              });
+              this.cList.splice(0,this.cList.length,...pMap[city.province])
+              this.formInline.Province_name = city.province;
+              this.$nextTick(() => {
+                this.formInline.city_ID = city.ID;
+              })
+              this.formInline.selectCity = city;
+            }
+          }
+        })
+      },
       save(){
         if(this.formInline.selectCity.name){
           if(this.$route.name!=='default-city'){

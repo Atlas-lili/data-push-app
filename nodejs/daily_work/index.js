@@ -6,48 +6,33 @@ const puppeteer = require("puppeteer");   //引入 puppeteer
 const {join} = require('path');
 
 const chartConf = {
-  "WeatherNow":{
-    url:"push/weather-air-now/",
-    href:"http://www.alfredqwang.cn/#/Sys/weather-air-now",
-    clip:{x:66,y:0,width:542,height:360},
+  'histogram-1': {
+    name: '柱状图动画延迟',
+    url:"push/histogram/",
+    href:"http://www.alfredqwang.cn/#/Sys/histogram",
+    clip:{x:24,y:24,width:366,height:400},
     mount: true
   },
-  "AirNow":{
-    url:"push/weather-air-now/",
-    href:"http://www.alfredqwang.cn/#/Sys/weather-air-now",
-    clip:{x:758,y:0,width:542,height:360},
+  'histogram-2': {
+    name: 'Bar with Background',
+    url:"push/histogram/",
+    href:"http://www.alfredqwang.cn/#/Sys/histogram",
+    clip:{x:410,y:24,width:366,height:400}
+  },
+  'histogram-3': {
+    name: '极坐标系下的堆叠柱状图',
+    url:"push/histogram/",
+    href:"http://www.alfredqwang.cn/#/Sys/histogram",
+    clip:{x:24,y:424,width:366,height:400},
     mount: true
   },
-  "WeatherHistory":{
-    url:"push/weather-history/",
-    href:"http://www.alfredqwang.cn/#/Sys/weather-history",
-    clip:{x:145,y:0,width:1084,height:502},
+  'histogram-4': {
+    name: '正负条形图',
+    url:"push/histogram/",
+    href:"http://www.alfredqwang.cn/#/Sys/histogram",
+    clip:{x:410,y:424,width:366,height:400},
     mount: true
   },
-  "TotalHistory":{
-    url:"push/epidemic-total/",
-    href:"http://www.alfredqwang.cn/#/Sys/epidemic-total",
-    clip:{x:143,y:0,width:1084,height:498},
-    mount: true
-  },
-  "TotalLocalization":{
-    url:"push/epidemic-now/",
-    href:"http://www.alfredqwang.cn/#/Sys/epidemic-now",
-    clip:{x:143,y:0,width:1084,height:698},
-    mount: true
-  },
-  "CityDCSpecific":{
-    url:"push/epidemic-patient-relation/",
-    href:"http://www.alfredqwang.cn/#/Sys/epidemic-patient-relation",
-    clip:{x:143,y:0,width:1084,height:498},
-    mount: true
-  },
-  "ProvinceLocalization":{
-    url:"push/epidemic-city-relation/",
-    href:"http://www.alfredqwang.cn/#/Sys/epidemic-city-relation",
-    clip:{x:143,y:0,width:1084,height:418},
-    mount: true
-  }
 }
 
 function holdTime(ms) {
@@ -59,20 +44,15 @@ function holdTime(ms) {
 }
 
 async function shotImg (chartstr,date){
-  const [city,chart,time] = chartstr.split("-");
   if (fs.existsSync(join(__dirname,`../assets/charts/${date.y}-${date.m}-${date.d}/${chartstr}.png`))) {
     return;
   }
   const browser = await puppeteer.launch({ headless:true,args: ['--no-sandbox']});
   const page = await browser.newPage();
-  if (city === chartstr) {
-    await page.goto(`http://${process.env.NODE_ENV==='production'? "www.alfredqwang.cn" : "localhost:8080"}/#/${chartConf[chartstr].url}`);
-  } else {
-    await page.goto(`http://${process.env.NODE_ENV==='production'? "www.alfredqwang.cn" : "localhost:8080"}/#/${chartConf[chart].url}${city}`);
-  }
+  await page.goto(`http://${process.env.NODE_ENV==='production'? "www.alfredqwang.cn" : "localhost:8080"}/#/${chartConf[chartstr].url}`);
   await page.setViewport({
-    width:1368,
-    height:625
+    width:800,
+    height:848
   }) 
   try{
     var dir = join(__dirname,`../assets/charts/${date.y}-${date.m}-${date.d}`);
@@ -80,10 +60,10 @@ async function shotImg (chartstr,date){
       fs.mkdirSync(dir, { recursive: true });
     }
   }catch(err){}
-  if (chartConf[city === chartstr? chartstr : chart].mount) {
+  if (chartConf[chartstr].mount) {
     await holdTime(800);
   }
-  await page.screenshot({ path: join(__dirname,`../assets/charts/${date.y}-${date.m}-${date.d}/${chartstr}.png`),clip:chartConf[city === chartstr? chartstr : chart].clip});
+  await page.screenshot({ path: join(__dirname,`../assets/charts/${date.y}-${date.m}-${date.d}/${chartstr}.png`),clip:chartConf[chartstr].clip});
   browser.close();
 }
 
@@ -99,15 +79,14 @@ exports.scheduleCronstyle = ()=>{
         let html = ''
         for(sub of u.subList){
           await shotImg(sub,{d,m,y});
-          const chart = sub.split("-")[1]
           const src = `http://www.alfredqwang.cn/charts/${y}-${m}-${d}/${sub}.png`
-          html+=`<div><p>${sub}---<a href="${chartConf[chart||sub].href}">查看详情</a></p><img src="${src}" alt="${sub}" /></div>`
+          html+=`<div><p>${chartConf[sub].name}---<a href="${chartConf[sub].href}">查看详情</a></p><img src="${src}" alt="${sub}" /></div>`
         }
         if(html){
           pushMail({
             to: u.email,
             html,
-            subject: `${y}年${m}月${d}日-给${u.ID}的天气报表`,
+            subject: `${y}年${m}月${d}日-给${u.ID}的数据报表`,
           })
         }
       }

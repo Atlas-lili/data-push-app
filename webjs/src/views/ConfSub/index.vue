@@ -37,20 +37,10 @@
 import draggable from 'vuedraggable'
 import axios from 'axios'
 import { mapMutations,mapGetters } from 'vuex'
-import citysList from '../City/citys.js'
 
 var chartsMap = {
-    WeatherNow: '当前天气',
-    AirNow: '当前空气质量',
-    WeatherHistory: '近日天气'
+    "histogram":['', '柱状图动画延迟', 'Bar with Background', '极坐标系下的堆叠柱状图', '正负条形图']
 }
-var chartsMap2 = {
-    TotalHistory:"全国疫情概览",
-    TotalLocalization:"各省市疫情概览",
-    CityDCSpecific:"各县市患者转换关系",
-    ProvinceLocalization:"各省市地缘确认病例关系"
-}
-
 export default {
     data() {
         return {
@@ -98,13 +88,19 @@ export default {
                 if(!item.includes('-')){
                     return{
                         EN: item,
-                        CN: this.chartsMap2[item]
+                        CN: item
                     }
                 } else {
-                    var [city, chart] = item.split('-');
+                    var [chartType, chartId] = item.split('-');
+                    if (!this.chartsMap[chartType] || !this.chartsMap[chartType][Number(chartId)]){
+                        return{
+                            EN: item,
+                            CN: item
+                        }
+                    }
                     return{
                         EN: item,
-                        CN: this.citysMap[city]+'-'+this.chartsMap[chart]
+                        CN: this.chartsMap[chartType][Number(chartId)]
                     }
                 }
             });
@@ -151,13 +147,7 @@ export default {
       }
     },
     created: function (){
-        var citysMap = {};
-        for(var city of citysList){
-            citysMap[city.City_EN] = city.name;
-        }
-        this.citysMap = citysMap;
         this.chartsMap = chartsMap;
-        this.chartsMap2 = chartsMap2;
         this.needSub = this.Userinfo.needSub;
         this.transformList(this.Userinfo.subList);
     },

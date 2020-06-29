@@ -5,9 +5,9 @@
       <s-side-list></s-side-list>
       <div class="view">
         <router-view></router-view>
+        <footer>陕ICP备19021517号</footer>
       </div>
     </div>
-    <footer>陕ICP备19021517号</footer>
   </div>
 </template>
 
@@ -20,7 +20,7 @@ img{vertical-align:top;border:none}
   padding-top: 70px;
   height: 100vh;
   .body{
-    height: 96%;
+    height: 100%;
     display: flex;
     .view{
       flex:1;

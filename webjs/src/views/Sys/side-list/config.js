@@ -1,30 +1,10 @@
 export var listMap = [{
     key: 'first',
-    title: '天气中心',
-    icon: 'el-icon-umbrella',
-    list: [{
-        index: 'weather-air-now',
-        txt: '天气/空气质量概览'
-    }, {
-        index: 'weather-history',
-        txt: '近日天气'
-    }]
-}, {
-    key: 'second',
-    title: '疫情中心',
+    title: '图表中心',
     icon: 'el-icon-data-analysis',
     list: [{
-        index: 'epidemic-total',
-        txt: '疫情概览'
-    }, {
-        index: 'epidemic-now',
-        txt: '各省（市）确诊人数图'
-    }, {
-        index: 'epidemic-patient-relation',
-        txt: '各市（县）患者转化图'
-    }, {
-        index: 'epidemic-city-relation',
-        txt: '各省（市）地缘-确诊关系'
+        index: 'histogram',
+        txt: '柱状图'
     }]
 }, {
     key: '3th',
