@@ -70,7 +70,7 @@ export default {
                         type: 'success'})
                     this.resetForm(formName);
                     this.$store.commit('rewriteUserinfo', res.data.data)
-                    this.$router.push('/Sys/weather-air-now')
+                    this.$router.push('/Sys/histogram')
                 })
             } else {
                 // eslint-disable-next-line no-console

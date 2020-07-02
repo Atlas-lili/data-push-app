@@ -156,13 +156,13 @@ exports.scheduleCronstyle = ()=>{
           const src = `http://www.alfredqwang.cn/charts/${y}-${m}-${d}/${sub}.png`
           html+=`<div><p>${chartConf[sub].name}---<a href="${chartConf[sub].href}">查看详情</a></p><img src="${src}" alt="${sub}" /></div>`
         }
-        // if(html){
-        //   pushMail({
-        //     to: u.email,
-        //     html,
-        //     subject: `${y}年${m}月${d}日-给${u.ID}的数据报表`,
-        //   })
-        // }
+        if(html){
+          pushMail({
+            to: u.email,
+            html,
+            subject: `${y}年${m}月${d}日-给${u.ID}的数据报表`,
+          })
+        }
       }
     }); 
 }
