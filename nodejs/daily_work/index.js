@@ -33,6 +33,80 @@ const chartConf = {
     clip:{x:410,y:424,width:366,height:400},
     mount: true
   },
+  'linechart-1': {
+    name: '基本折线图',
+    url:"push/linechart/",
+    href:"http://www.alfredqwang.cn/#/Sys/linechart",
+    clip:{x:24,y:24,width:366,height:400},
+    mount: true
+  },
+  'linechart-2': {
+    name: '堆叠区域图',
+    url:"push/linechart/",
+    href:"http://www.alfredqwang.cn/#/Sys/linechart",
+    clip:{x:410,y:24,width:366,height:400},
+    mount: true
+  },
+  'linechart-3': {
+    name: '平滑折线图',
+    url:"push/linechart/",
+    href:"http://www.alfredqwang.cn/#/Sys/linechart",
+    clip:{x:24,y:424,width:366,height:400},
+    mount: true
+  },
+  'linechart-4': {
+    name: '阶梯折线图',
+    url:"push/linechart/",
+    href:"http://www.alfredqwang.cn/#/Sys/linechart",
+    clip:{x:410,y:424,width:366,height:400},
+    mount: true
+  },
+  'piechart-1': {
+    name: '定制饼图',
+    url:"push/piechart/",
+    href:"http://www.alfredqwang.cn/#/Sys/piechart",
+    clip:{x:24,y:24,width:366,height:400},
+    mount: true
+  },
+  'piechart-2': {
+    name: '甜甜圈饼图',
+    url:"push/piechart/",
+    href:"http://www.alfredqwang.cn/#/Sys/piechart",
+    clip:{x:410,y:24,width:366,height:400},
+    mount: true
+  },
+  'piechart-3': {
+    name: '特殊标签图',
+    url:"push/piechart/",
+    href:"http://www.alfredqwang.cn/#/Sys/piechart",
+    clip:{x:24,y:424,width:366,height:400},
+    mount: true
+  },
+  'piechart-4': {
+    name: '南丁格尔玫瑰图',
+    url:"push/piechart/",
+    href:"http://www.alfredqwang.cn/#/Sys/piechart",
+    clip:{x:410,y:424,width:366,height:400},
+    mount: true
+  },
+  'scatter-1': {
+    name: '基本散点图',
+    url:"push/scatter/",
+    href:"http://www.alfredqwang.cn/#/Sys/scatter",
+    clip:{x:24,y:24,width:366,height:400}
+  },
+  'scatter-2': {
+    name: '效果散点图',
+    url:"push/scatter/",
+    href:"http://www.alfredqwang.cn/#/Sys/scatter",
+    clip:{x:410,y:24,width:366,height:400}
+  },
+  'scatter-3': {
+    name: '人均寿命与GDP',
+    url:"push/scatter/",
+    href:"http://www.alfredqwang.cn/#/Sys/scatter",
+    clip:{x:24,y:424,width:366,height:400}
+  }
 }
 
 function holdTime(ms) {
@@ -82,13 +156,13 @@ exports.scheduleCronstyle = ()=>{
           const src = `http://www.alfredqwang.cn/charts/${y}-${m}-${d}/${sub}.png`
           html+=`<div><p>${chartConf[sub].name}---<a href="${chartConf[sub].href}">查看详情</a></p><img src="${src}" alt="${sub}" /></div>`
         }
-        if(html){
-          pushMail({
-            to: u.email,
-            html,
-            subject: `${y}年${m}月${d}日-给${u.ID}的数据报表`,
-          })
-        }
+        // if(html){
+        //   pushMail({
+        //     to: u.email,
+        //     html,
+        //     subject: `${y}年${m}月${d}日-给${u.ID}的数据报表`,
+        //   })
+        // }
       }
     }); 
 }

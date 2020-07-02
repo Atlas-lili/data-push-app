@@ -1,6 +1,9 @@
 const User = require('../init_db').User;
 var chartMap = {
-    "histogram":[1,2,3,4]
+    "histogram":[1,2,3,4],
+    "linechart":[1,2,3,4],
+    "piechart":[1,2,3,4],
+    "scatter":[1,2,3]
 }
 
 exports.addSub = async function(reqBody){

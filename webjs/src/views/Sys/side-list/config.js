@@ -5,6 +5,15 @@ export var listMap = [{
     list: [{
         index: 'histogram',
         txt: '柱状图'
+    },{
+        index: 'linechart',
+        txt: '折线图'        
+    },{
+        index: 'piechart',
+        txt: '饼图'   
+    },{
+        index: 'scatter',
+        txt: '散点图'
     }]
 }, {
     key: '3th',

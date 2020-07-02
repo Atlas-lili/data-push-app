@@ -7,6 +7,9 @@ import City from './views/City/index'
 import ConfSub from './views/ConfSub/index'
 
 import Histogram from './views/Histogram/index'
+import LineChart from './views/LineChart/index'
+import PieChart from './views/PieChart/index'
+import Scatter from './views/Scatter/index'
 
 Vue.use(Router)
 
@@ -32,7 +35,23 @@ export default new Router({
           path: 'histogram',
           name: 'histogram',
           component: Histogram
-        }, {
+        },
+        {
+          path:'linechart',
+          name:'linechart',
+          component:LineChart
+        }, 
+        {
+          path:'piechart',
+          name:'piechart',
+          component:PieChart
+        },
+        {
+          path:'scatter',
+          name:'scatter',
+          component:Scatter
+        },
+        {
           path: 'default-city',
           name:'default-city',
           component:City
@@ -45,6 +64,15 @@ export default new Router({
     }, {
       path: '/push/histogram',
       component: Histogram
+    }, {
+      path: '/push/linechart',
+      component: LineChart    
+    }, {
+      path: '/push/piechart',
+      component: PieChart
+    }, {
+      path: '/push/scatter',
+      component: Scatter
     }
   ]
 })

@@ -39,7 +39,10 @@ import axios from 'axios'
 import { mapMutations,mapGetters } from 'vuex'
 
 var chartsMap = {
-    "histogram":['', '柱状图动画延迟', 'Bar with Background', '极坐标系下的堆叠柱状图', '正负条形图']
+    "histogram":['', '柱状图动画延迟', 'Bar with Background', '极坐标系下的堆叠柱状图', '正负条形图'],  //下标查找不存在chart0
+    "linechart":['','基本折线图','堆叠区域图','平滑折线图','阶梯折线图'],
+    "piechart":['','定制饼图','甜甜圈饼图','特殊标签图','南丁格尔玫瑰图'],
+    "scatter":['','基本散点图','效果散点图','人均寿命与GDP']
 }
 export default {
     data() {
