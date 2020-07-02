@@ -16,9 +16,9 @@ var email = nodemailer.createTransport({
     var m = date.getMonth()+1;
     var y = date.getFullYear();
     var msg = {
-      from: "天气订阅平台<alfredqwang@163.com>",
+      from: "数据报表系统<alfredqwang@163.com>",
       to: "3163299800@qq.com",
-      subject: `${y}年${m}月${d}日-天气报表`,
+      subject: `${y}年${m}月${d}日-数据报表`,
     };
     return new Promise(function(res, rej) {
       email.sendMail({
